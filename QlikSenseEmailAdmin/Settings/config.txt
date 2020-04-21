@@ -1,0 +1,9 @@
+﻿-proxy:https://localhost
+-wait:600
+-smtp_server:smtp.gmail.com
+-smtp_port:587
+-smtp_enableSSL:Y
+-stmp_user:YourEmail@gmail.com
+-smtp_pw:YourEmailPassword
+-smtp_from:YourEmail@gmail.com
+-smtp_to:UserToBeNotified@YourCompany.com
