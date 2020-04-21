@@ -27,9 +27,6 @@ namespace QlikSenseEmailAdmin
 
         private QlikSenseJSONHelper qs;
 
-        
-
-
         static void Main(string[] args)
         {
 
@@ -60,23 +57,16 @@ namespace QlikSenseEmailAdmin
 
             //defaults
             string proxy = "";
-            // Int32 timeout = 60 * 1000;
-            string task = "";
-            // bool synchronous = true;
 
-            string JsonData = "";
-            string email_server = "";
-            string email_port = "";
-            string email_user = "";
-            string email_pw = "";
-            string email_to = "";
-            string email_from = "";
-            string email_ssl = "N";
-            string email_property_name = "";
-            string qs_wait = "60000";
-
-
-
+            var jsonData = "";
+            var emailServer = "";
+            var emailPort = "";
+            var emailUser = "";
+            var emailPw = "";
+            var emailTo = "";
+            var emailFrom = "";
+            var emailSsl = "N";
+            var emailPropertyName = "";
 
 
             //******** Delete log files older than 2 days
@@ -127,15 +117,15 @@ namespace QlikSenseEmailAdmin
 
                     proxy = QSReg.GetQMCserver();
 
-                    email_server = QSReg.GetSMTPserver();
-                    email_ssl = QSReg.GetSSL();
-                    email_user = QSReg.GetUsername();
-                    email_port = QSReg.GetPort();
-                    email_pw = QSReg.GetPassword();
-                    email_from = QSReg.GetEmailFrom();
-                    email_to = QSReg.GetEmailTo();
-                    qs_wait = QSReg.GetWait();
-                    email_property_name = QSReg.GetEmailPropertyName();
+                    emailServer = QSReg.GetSMTPserver();
+                    emailSsl = QSReg.GetSSL();
+                    emailUser = QSReg.GetUsername();
+                    emailPort = QSReg.GetPort();
+                    emailPw = QSReg.GetPassword();
+                    emailFrom = QSReg.GetEmailFrom();
+                    emailTo = QSReg.GetEmailTo();
+                    QSReg.GetWait();
+                    emailPropertyName = QSReg.GetEmailPropertyName();
 
                     goto bypass;
                 }
@@ -187,12 +177,12 @@ namespace QlikSenseEmailAdmin
                             break;
 
                         case "-smtp_server":
-                            email_server = "";
+                            emailServer = "";
 
                             for (int j = 1; j < param.Length; j++)
                             {
-                                email_server += param[j];
-                                if (j < param.Length - 1) email_server += ":"; //put back the colon
+                                emailServer += param[j];
+                                if (j < param.Length - 1) emailServer += ":"; //put back the colon
                             }
 
 
@@ -201,24 +191,24 @@ namespace QlikSenseEmailAdmin
 
 
                         case "-smtp_port":
-                            email_port = "";
+                            emailPort = "";
 
                             for (int j = 1; j < param.Length; j++)
                             {
-                                email_port += param[j];
-                                if (j < param.Length - 1) email_port += ":"; //put back the colon
+                                emailPort += param[j];
+                                if (j < param.Length - 1) emailPort += ":"; //put back the colon
                             }
 
 
                             break;
 
                         case "-stmp_user":
-                            email_user = "";
+                            emailUser = "";
 
                             for (int j = 1; j < param.Length; j++)
                             {
-                                email_user += param[j];
-                                if (j < param.Length - 1) email_user += ":"; //put back the colon
+                                emailUser += param[j];
+                                if (j < param.Length - 1) emailUser += ":"; //put back the colon
                             }
 
 
@@ -227,11 +217,11 @@ namespace QlikSenseEmailAdmin
 
                         case "-smtp_pw":
 
-                            email_pw = "";
+                            emailPw = "";
                             for (int j = 1; j < param.Length; j++)
                             {
-                                email_pw += param[j];
-                                if (j < param.Length - 1) email_pw += ":"; //put back the colon
+                                emailPw += param[j];
+                                if (j < param.Length - 1) emailPw += ":"; //put back the colon
                             }
 
 
@@ -239,11 +229,11 @@ namespace QlikSenseEmailAdmin
 
                         case "-smtp_from":
 
-                            email_from = "";
+                            emailFrom = "";
                             for (int j = 1; j < param.Length; j++)
                             {
-                                email_from += param[j];
-                                if (j < param.Length - 1) email_from += ":"; //put back the colon
+                                emailFrom += param[j];
+                                if (j < param.Length - 1) emailFrom += ":"; //put back the colon
                             }
 
 
@@ -252,11 +242,11 @@ namespace QlikSenseEmailAdmin
 
                         case "-smtp_to":
 
-                            email_to = "";
+                            emailTo = "";
                             for (int j = 1; j < param.Length; j++)
                             {
-                                email_to += param[j];
-                                if (j < param.Length - 1) email_to += ":"; //put back the colon
+                                emailTo += param[j];
+                                if (j < param.Length - 1) emailTo += ":"; //put back the colon
                             }
 
 
@@ -265,11 +255,11 @@ namespace QlikSenseEmailAdmin
 
                         case "-smtp_enableSSL":
 
-                            email_ssl = "";
+                            emailSsl = "";
                             for (int j = 1; j < param.Length; j++)
                             {
-                                email_ssl += param[j];
-                                if (j < param.Length - 1) email_ssl += ":"; //put back the colon
+                                emailSsl += param[j];
+                                if (j < param.Length - 1) emailSsl += ":"; //put back the colon
                             }
 
 
@@ -293,7 +283,7 @@ namespace QlikSenseEmailAdmin
 
                 }
 
-            bypass:;
+            bypass:
                 logger.Log(LogLevel.Information, "Proxy: " + proxy);
    
                 if (proxy == "")
@@ -306,7 +296,7 @@ namespace QlikSenseEmailAdmin
 
 
 
-                int retval = 0;
+                var retval = 0;
                 try
                 {
                     QlikSenseJSONHelper qs = new QlikSenseJSONHelper(proxy, 60000, logger); //http timeout 60 seconds
@@ -316,13 +306,13 @@ namespace QlikSenseEmailAdmin
                     logger.Log(LogLevel.Information, "Looking for Failed Tasks...");
                     //TaskStatus
 
-                    List<QlikSenseUserList> UserList = (List<QlikSenseUserList>)qs.GetDeletedUserList(QSTaskStatus.Failed);
+                    var userList = qs.GetDeletedUserList(QSTaskStatus.Failed);
 
-                    List<QlikSenseTaskResult> TaskList = (List<QlikSenseTaskResult>)qs.GetTaskByStatus(QSTaskStatus.Failed);
+                    var taskList = qs.GetTaskByStatus(QSTaskStatus.Failed);
 
-                    List<QlikSenseTaskResult> TaskListError = (List<QlikSenseTaskResult>)qs.GetTaskByStatus(QSTaskStatus.Error);
+                    var taskListError = qs.GetTaskByStatus(QSTaskStatus.Error);
 
-                    List<QlikSenseTaskResult> TaskListAborted = (List<QlikSenseTaskResult>)qs.GetTaskByStatus(QSTaskStatus.Aborted);
+                    var taskListAborted = qs.GetTaskByStatus(QSTaskStatus.Aborted);
 
 
                     //TaskList.AddRange(TaskListError);
@@ -330,13 +320,9 @@ namespace QlikSenseEmailAdmin
 
                     //***
 
-                    string temp;
-
                     //Nick----8/9/2017
-                    temp = qs.GetTaskByStatusText(QSTaskStatus.Failed);
-                   
-                 //   JsonData = temp;
-                    List<TaskResult> MyTaskResult = JsonConvert.DeserializeObject<List<TaskResult>>(temp);
+                    var temp = qs.GetTaskByStatusText(QSTaskStatus.Failed);
+                    List<TaskResult> myTaskResult = JsonConvert.DeserializeObject<List<TaskResult>>(temp);
 
 
                     //temp =  qs.GetTaskByStatusText(QSTaskStatus.Aborted);
@@ -346,81 +332,51 @@ namespace QlikSenseEmailAdmin
 
 
                     temp = qs.GetTaskByStatusText(QSTaskStatus.Aborted);
-                    JsonData = temp;
-                    MyTaskResult.AddRange(JsonConvert.DeserializeObject<List<TaskResult>>(JsonData));
+                    jsonData = temp;
+                    myTaskResult.AddRange(JsonConvert.DeserializeObject<List<TaskResult>>(jsonData));
                     //List<TaskResult> MyTaskResult = JsonConvert.DeserializeObject<List<TaskResult>>(temp);
 
                     temp = qs.GetTaskByStatusText(QSTaskStatus.Error);
-                    MyTaskResult.AddRange(JsonConvert.DeserializeObject<List<TaskResult>>(temp));
+                    myTaskResult.AddRange(JsonConvert.DeserializeObject<List<TaskResult>>(temp));
 
 
                     //****
 
 
-                    TaskList.AddRange(TaskListError);
-                    TaskList.AddRange(TaskListAborted);
+                    taskList.AddRange(taskListError);
+                    taskList.AddRange(taskListAborted);
 
                     //List<Customproperty> customPropertyList;
 
-                    string myresult;
-                    string errormsg;
-                    string CurTaskID;
-                    string CurTaskName;
-                    string CurTaskDate;
-                    object customProperty;
-                    DateTime TaskDate;
-
-                    int counter = 0;
-                    int customProp = 0;
-                    string line;
-                    string Filecontent = "";
-                    string[] logParams;
-                    string FileTaskID = "";
-                    string FileTaskName = "";
-                    Boolean Emailstatus = false;
-                    Boolean ExistingTask = false;
-                    string emailToList = "";
-                    string custPropName = "";
-                    int AlertCount = 0;
-                    string ErrorMessage = "";
-
-                    string fileRefID = "";
-                    string fileData = "";
+                    var alertCount = 0;
+                    var ErrorMessage = "";
 
                     DateTime FileLastEmailDate;
 
-                    logger.Log(LogLevel.Information, "Found " + Convert.ToString(TaskList.Count) + " Failed Tasks!");
+                    logger.Log(LogLevel.Information, "Found " + Convert.ToString(taskList.Count) + " Failed Tasks!");
 
-
-
-                    for (int i = 0; i <= TaskList.Count - 1; i++)
+                    for (int i = 0; i <= taskList.Count - 1; i++)
                     {
-                        ExistingTask = false;
-                        Filecontent = "";
+                        var ExistingTask = false;
+                        var Filecontent = "";
 
-                        myresult = TaskList[i].operational.lastExecutionResult.startTime;
-
-
-                        fileRefID = TaskList[i].operational.lastExecutionResult.fileReferenceID;
+                        var myresult = taskList[i].operational.lastExecutionResult.startTime;
 
 
-
-                        // List<QlikSenseTaskResult> TaskList = (List<QlikSenseTaskResult>)qs.GetTaskByStatus(QSTaskStatus.Failed);
-
-
+                        var fileRefID = taskList[i].operational.lastExecutionResult.fileReferenceID;
 
                         myresult = myresult.Replace('T', ' ');
                         myresult = myresult.Replace('Z', ' ');
-                        TaskDate = Convert.ToDateTime(myresult);
+                        var taskDate = Convert.ToDateTime(myresult);
                         //Convert UTC time to Local Time
-                        TaskDate = TimeZoneInfo.ConvertTimeFromUtc(TaskDate, TimeZoneInfo.Local);
-                        CurTaskName = TaskList[i].name;
-                        CurTaskID = TaskList[i].id;
+                        taskDate = TimeZoneInfo.ConvertTimeFromUtc(taskDate, TimeZoneInfo.Local);
+                        var CurTaskName = taskList[i].name;
+                        var CurTaskID = taskList[i].id;
 
-                        if (TaskList[i].operational.lastExecutionResult.details.Count() > 0)
+                        if (taskList[i].operational.lastExecutionResult.details.Count() > 0)
                         {
                             ErrorMessage = "";
-                            foreach (QlikSenseJSONObjects.Detail tempmsg in TaskList[i].operational.lastExecutionResult.details)
+                            foreach (Detail tempmsg in taskList[i].operational.lastExecutionResult.details)
                             {
                                 ErrorMessage += tempmsg.message + "<br>";
                             }
@@ -431,50 +387,51 @@ namespace QlikSenseEmailAdmin
                         }
 
 
-                        emailToList = "";
-                        fileData = "";
+                        var emailToList = "";
+                        var fileData = "";
                         if (fileRefID != "00000000-0000-0000-0000-000000000000")
                         {
                             fileData = qs.GetTaskFile(CurTaskID, fileRefID);
                         }
 
-
-
                         //****** CHECK FOR CUSTOM PROPERTY VALUE(S) THAT CONTAIN EMAIL ADDRESSES
                         //int CustPropCount = MyTaskResult[i].customProperties.Count;
 
-
                         //yTaskResult[i].customProperties.Count
 
-                        if (MyTaskResult[i] != null)
-                        { 
-                            if (MyTaskResult[i].customProperties.Count > 0)
+                        if (myTaskResult[i] != null)
+                        {
+                            if (myTaskResult[i].customProperties.Count > 0)
                             {
-
-                                for (customProp = 0; customProp <= MyTaskResult[i].customProperties.Count - 1; customProp++)
+                                var customProp = 0;
+                                for (customProp = 0;
+                                    customProp <= myTaskResult[i].customProperties.Count - 1;
+                                    customProp++)
                                 {
                                     //custPropName = MyTaskResult[i].customProperties[customProp].definition.name;
-                                    if (MyTaskResult[i].customProperties[customProp].definition.name == email_property_name)
+                                    if (myTaskResult[i].customProperties[customProp].definition.name ==
+                                        emailPropertyName)
                                     {
                                         if (emailToList.Length > 0)
                                         {
-                                            emailToList = emailToList + "," + MyTaskResult[i].customProperties[customProp].value;
+                                            emailToList =
+                                                emailToList + "," + myTaskResult[i].customProperties[customProp].value;
                                         }
                                         else
                                         {
-                                            emailToList = MyTaskResult[i].customProperties[customProp].value;
+                                            emailToList = myTaskResult[i].customProperties[customProp].value;
                                         }
                                     }
 
 
                                 }
                             }
-                    }
+                        }
 
                         //****** ASSIGN DEFAULT EMAIL ADDRESS IF NO CUSTOM VALUES ARE FOUND!
                         if (emailToList.Length == 0)
                         {
-                            emailToList = email_to;
+                            emailToList = emailTo;
                         }
 
                     //TODO: 
@@ -493,22 +450,14 @@ namespace QlikSenseEmailAdmin
 
 
                     // <---------  1. START OPEN LOG FILE & READ EACH LINE
-
-
-
-                    FileTaskID = "";
-                        FileTaskName = "";
-                        Emailstatus = false;
-
-
-                        // Read the file and display it line by line.
+                    // Read the file and display it line by line.
                         System.IO.StreamReader file = new System.IO.StreamReader(LogFile);
+                        string line;
                         while ((line = file.ReadLine()) != null)
                         {
 
-                            logParams = line.Split('~');
-                            FileTaskID = logParams[0];
-                            FileTaskName = logParams[1];
+                            var logParams = line.Split('~');
+                            var FileTaskID = logParams[0];
                             FileLastEmailDate = Convert.ToDateTime(logParams[2]);
 
 
@@ -516,15 +465,14 @@ namespace QlikSenseEmailAdmin
 
                             if (FileTaskID == CurTaskID)   //IF EXISTING EMAIL IS FOUND CHECK LAST SENT DATE
                             {
-                                Emailstatus = false;
+                                var Emailstatus = false;
                                 ExistingTask = true;
                                 if (FileLastEmailDate.AddHours(24) < DateTime.Now) // Send email if last email is sent more than 24 hours ago.
                                 {
 
-                                    AlertCount = +1;
+                                    alertCount = +1;
                                     logger.Log(LogLevel.Information, "Sending Email For " + CurTaskName + " ....");
-                                    //SendEmail(CurTaskName, Convert.ToString(TaskDate), email_from, email_user, email_pw, email_to, email_server, Convert.ToInt32(email_port), email_ssl);
-                                    SendEmail(CurTaskName, Convert.ToString(TaskDate), email_from, email_user, email_pw, emailToList, email_server, Convert.ToInt32(email_port), email_ssl, fileData, ErrorMessage);
+                                    SendEmail(CurTaskName, Convert.ToString(taskDate), emailFrom, emailUser, emailPw, emailToList, emailServer, Convert.ToInt32(emailPort), emailSsl, fileData, ErrorMessage);
                                     logger.Log(LogLevel.Information, "Email Sent!");
                                     Emailstatus = true;
                                 }
@@ -537,13 +485,8 @@ namespace QlikSenseEmailAdmin
                                     line = string.Join("~", logParams);
 
                                 }
-
-
                             }
-
-
                             Filecontent = Filecontent + line + "\r\n";
-                            counter++;
                         }
 
 
@@ -553,44 +496,28 @@ namespace QlikSenseEmailAdmin
                         {
                             Filecontent = Filecontent + CurTaskID + "~" + CurTaskName + "~" + Convert.ToString(DateTime.Now) + "\r\n";
                             logger.Log(LogLevel.Information, "Sending Email" + CurTaskName + " ....");
-                            SendEmail(CurTaskName, Convert.ToString(TaskDate), email_from, email_user, email_pw, emailToList, email_server, Convert.ToInt32(email_port), email_ssl, fileData, ErrorMessage);
+                            SendEmail(CurTaskName, Convert.ToString(taskDate), emailFrom, emailUser, emailPw, emailToList, emailServer, Convert.ToInt32(emailPort), emailSsl, fileData, ErrorMessage);
                             logger.Log(LogLevel.Information, "Email Sent...");
-                            AlertCount = AlertCount + 1;
+                            alertCount = alertCount + 1;
                         }
 
 
-                        if (AlertCount > 0)
+                        if (alertCount > 0)
                         {
 
                             File.WriteAllText(LogFile, Filecontent);
                         }
                         file.Close();
 
-
-
-
-                        // <---------  1. FINISH OPEN LOG FILE & READ EACH LINE
-
-
-                        if (TaskDate.AddHours(24) < DateTime.Now)
+                        if (taskDate.AddHours(24) < DateTime.Now)
                         {
-                            errormsg = "Task Failed:" + TaskList[i].name + " on " + Convert.ToString(TaskDate);
                         }
 
-                        //Console.WriteLine(i);
                     }
-
-
-
-
-
-
-
- 
                 }
                 catch (Exception e)
                 {
-                    logger.Log(LogLevel.Error, e.ToString() +  "\r\n" + JsonData );
+                    logger.Log(LogLevel.Error, e.ToString() +  "\r\n" + jsonData );
 
                     if (e.ToString() == "Timeout: The operation has timed out")
                     {
@@ -610,17 +537,16 @@ namespace QlikSenseEmailAdmin
         }
 
 
-        private static Boolean SendEmail(string TaskName, string TaskDate, string SendFrom, string UserID, string Password, string SendTo, string SMTPServer, Int32 SmtpPort, string EnableSsl, string FileData, string ErrorMsg)
+        private static void SendEmail(string TaskName, string TaskDate, string SendFrom, string UserID, string Password, string SendTo, string SMTPServer, Int32 SmtpPort, string EnableSsl, string FileData, string ErrorMsg)
         {
-            MailMessage message = new MailMessage();
+            var message = new MailMessage();
 
 
             byte[] byteArray = Encoding.UTF8.GetBytes(FileData);
-            //byte[] byteArray = Encoding.ASCII.GetBytes(contents);
-            MemoryStream stream = new MemoryStream(byteArray);
+            var stream = new MemoryStream(byteArray);
 
             // Create  the file attachment for this email message.
-            Attachment data = new Attachment(stream,  TaskName + "_" + TaskDate + "_Log.txt" , MediaTypeNames.Text.Plain );
+            var data = new Attachment(stream,  TaskName + "_" + TaskDate + "_Log.txt" , MediaTypeNames.Text.Plain );
 
             // Add time stamp information for the file.
             //ContentDisposition disposition = data.ContentDisposition;
@@ -638,24 +564,18 @@ namespace QlikSenseEmailAdmin
             message.IsBodyHtml = true;
             message.Body = "<h1 style=\"font-family:Arial;color: #04B431;\" >Automated QlikSense Task Failure Alert!</h1> <div style=\"font-family:Arial;\">  Following QlikSense task has failed to run:<br> <br> Task Name = <strong>"
                 + TaskName + "</strong><br>Failure Date = <strong> " + TaskDate + "</strong> <br>Error = <strong> " + ErrorMsg +"</strong><br><br> No new alerts will be sent for this task for the next 24 hours! </div>";
-            
-            SmtpClient smtp = new SmtpClient(SMTPServer, SmtpPort);
-            smtp.UseDefaultCredentials = false;
-          
-            smtp.Credentials = new System.Net.NetworkCredential(UserID, Password);
-            if (EnableSsl == "Y")
+
+            var smtp = new SmtpClient(SMTPServer, SmtpPort)
             {
-                smtp.EnableSsl = true;
-            }
-            else
-            {
-                smtp.EnableSsl = false;
-            }
-            
+                UseDefaultCredentials = false,
+
+                Credentials = new NetworkCredential(UserID, Password),
+                EnableSsl = EnableSsl == "Y"
+            };
+
             smtp.Send(message);
 
             System.Threading.Thread.Sleep(3000);
-            return true;
 
         }
 
