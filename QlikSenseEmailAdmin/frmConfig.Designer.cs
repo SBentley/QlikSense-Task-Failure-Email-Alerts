@@ -526,9 +526,9 @@
             this.label17.ForeColor = System.Drawing.Color.OrangeRed;
             this.label17.Location = new System.Drawing.Point(333, 4);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(87, 13);
+            this.label17.Size = new System.Drawing.Size(111, 13);
             this.label17.TabIndex = 30;
-            this.label17.Text = "SBentley Version";
+            this.label17.Text = "SBentley Version 0.01";
             // 
             // frmConfig
             // 

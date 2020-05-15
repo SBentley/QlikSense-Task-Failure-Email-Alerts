@@ -80,10 +80,10 @@ namespace QlikSenseEmailAdmin
                 if (!args[0].Contains(":"))   //Get config values from registry unless there is a parameter with ":" in it
                 {
 
-                    proxy = qsReg.GetQMCserver();
+                    proxy = qsReg.GetQmcServer();
 
-                    emailServer = qsReg.GetSMTPserver();
-                    emailSsl = qsReg.GetSSL();
+                    emailServer = qsReg.GetSmtpServer();
+                    emailSsl = qsReg.GetSsl();
                     emailUser = qsReg.GetUsername();
                     emailPort = qsReg.GetPort();
                     emailPw = qsReg.GetPassword();
@@ -244,28 +244,28 @@ namespace QlikSenseEmailAdmin
                 var retval = 0;
                 try
                 {
-                    var qs = new QlikSenseJSONHelper(proxy, 60000, logger); //http timeout 60 seconds
+                    var qs = new QlikSenseJSONHelper(proxy, 60000); //http timeout 60 seconds
                     //TODO: - set mail params SMTPServerHost, and SMTPServerPort, AdminEmailAddress, FromEmailAddress,EnvironmentName there will probably be a couple more
 
                     logger.Log(LogLevel.Information, "Looking for Failed Tasks...");
                     //TaskStatus
 
-                    var userList = qs.GetDeletedUserList(QSTaskStatus.Failed);
+                    var userList = qs.GetDeletedUserList(QsTaskStatus.Failed);
 
-                    var taskList = qs.GetTaskByStatus(QSTaskStatus.Failed);
+                    var taskList = qs.GetTaskByStatus(QsTaskStatus.Failed);
 
-                    var taskListError = qs.GetTaskByStatus(QSTaskStatus.Error);
+                    var taskListError = qs.GetTaskByStatus(QsTaskStatus.Error);
 
-                    var taskListAborted = qs.GetTaskByStatus(QSTaskStatus.Aborted);
+                    var taskListAborted = qs.GetTaskByStatus(QsTaskStatus.Aborted);
 
-                    var temp = qs.GetTaskByStatusText(QSTaskStatus.Failed);
+                    var temp = qs.GetTaskByStatusText(QsTaskStatus.Failed);
                     var myTaskResult = JsonConvert.DeserializeObject<List<TaskResult>>(temp);
 
-                    temp = qs.GetTaskByStatusText(QSTaskStatus.Aborted);
+                    temp = qs.GetTaskByStatusText(QsTaskStatus.Aborted);
                     jsonData = temp;
                     myTaskResult.AddRange(JsonConvert.DeserializeObject<List<TaskResult>>(jsonData));
 
-                    temp = qs.GetTaskByStatusText(QSTaskStatus.Error);
+                    temp = qs.GetTaskByStatusText(QsTaskStatus.Error);
                     myTaskResult.AddRange(JsonConvert.DeserializeObject<List<TaskResult>>(temp));
 
                     taskList.AddRange(taskListError);

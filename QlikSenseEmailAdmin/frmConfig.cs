@@ -35,11 +35,11 @@ namespace QlikSenseEmailAdmin
         {
 
 
-            QSReg.SetQMCserver(tb_qsurl.Text.Trim());
+            QSReg.SetQmcServer(tb_qsurl.Text.Trim());
 
-            QSReg.SetSMTPserver(tb_server.Text.Trim());
+            QSReg.SetSmptServer(tb_server.Text.Trim());
             
-            QSReg.SetSSL(cb_ssl.Checked);
+            QSReg.SetSsl(cb_ssl.Checked);
 
             QSReg.SetUsername(tb_username.Text.Trim());
 
@@ -94,10 +94,10 @@ namespace QlikSenseEmailAdmin
             string email_property = "";
 
 
-            proxy = QSReg.GetQMCserver();
+            proxy = QSReg.GetQmcServer();
 
-            email_server = QSReg.GetSMTPserver();
-            email_ssl = QSReg.GetSSL();
+            email_server = QSReg.GetSmtpServer();
+            email_ssl = QSReg.GetSsl();
             email_user = QSReg.GetUsername();
             email_port = QSReg.GetPort();
             email_pw = QSReg.GetPassword();
@@ -148,14 +148,14 @@ namespace QlikSenseEmailAdmin
 
 
                 //QlikSenseJSONHelper qs = new QlikSenseJSONHelper(tb_qsurl.Text.Trim(), 60000, logger);
-                QlikSenseJSONHelper qs = new QlikSenseJSONHelper(tb_qsurl.Text.Trim(), Convert.ToInt32(tb_wait.Text), logger); //http timeout 60 seconds
+                QlikSenseJSONHelper qs = new QlikSenseJSONHelper(tb_qsurl.Text.Trim(), Convert.ToInt32(tb_wait.Text)); //http timeout 60 seconds
                                                                                                                                //SMTPMail mail = new SMTPMail();
                                                                                                                                //TODO: - set mail params SMTPServerHost, and SMTPServerPort, AdminEmailAddress, FromEmailAddress,EnvironmentName there will probably be a couple more
 
                 logger.Log(LogLevel.Information, "Looking for Failed Tasks...");
                 //TaskStatus
 
-                List<QlikSenseTaskResult> TaskList = (List<QlikSenseTaskResult>)qs.GetTaskByStatus(QSTaskStatus.Failed);
+                List<QlikSenseTaskResult> TaskList = (List<QlikSenseTaskResult>)qs.GetTaskByStatus(QsTaskStatus.Failed);
 
                 if (TaskList.Count >= 0)
                 {
@@ -337,8 +337,8 @@ namespace QlikSenseEmailAdmin
             Logger logger = new Logger();
             logger.Start(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\QlikSenseEmailAdmin\\history");
             logger.SetLogLevel(LogLevel.Debug);
-            QlikSenseJSONHelper qs = new QlikSenseJSONHelper(QSReg.GetQMCserver(), 60000, logger);
-            List<QlikSenseUserList> UserList = (List<QlikSenseUserList>)qs.GetDeletedUserList(QSTaskStatus.Failed);
+            QlikSenseJSONHelper qs = new QlikSenseJSONHelper(QSReg.GetQmcServer(), 60000);
+            List<QlikSenseUserList> UserList = (List<QlikSenseUserList>)qs.GetDeletedUserList(QsTaskStatus.Failed);
             qrsClient.Delete("/qrs/User/" + UserList[0].id.ToString());
             
         }
