@@ -1,21 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using QlikSenseJSONObjects;
 using System.Diagnostics;
 using MyLogger;
-using Microsoft.Win32;
 using System.Net.Mail;
-using Microsoft.Win32.TaskScheduler;
 using System.Reflection;
 using QVnextDemoBuilder;
+using Microsoft.Win32.TaskScheduler;
 
 namespace QlikSenseEmailAdmin
 {
