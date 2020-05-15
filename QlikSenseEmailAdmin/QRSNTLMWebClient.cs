@@ -4,7 +4,6 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Net;
 using System.Text;
-using System.Security.Principal;
 
 namespace QVnextDemoBuilder
 {
@@ -12,24 +11,23 @@ namespace QVnextDemoBuilder
     {
         private readonly CookierAwareWebClient _client;
         private readonly NameValueCollection _queryStringCollection;
-        private string serverURL;
+        private readonly string _serverUrl;
 
-        public QRSNTLMWebClient(string QRSserverURL, Int32 requesttimeout)
+        public QRSNTLMWebClient(string QRSserverURL, int requesttimeout)
         {
-            _client = new CookierAwareWebClient { Encoding = Encoding.UTF8 };
-            _client.UseDefaultCredentials = true;
-            _client.Timeout = requesttimeout;
-
-            //_client.Credentials = CredentialCache.DefaultCredentials;
+            _client = new CookierAwareWebClient
+            {
+                Encoding = Encoding.UTF8, UseDefaultCredentials = true, Timeout = requesttimeout
+            };
 
             _queryStringCollection = new NameValueCollection { { "xrfkey", "ABCDEFG123456789" } };
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-            serverURL = QRSserverURL;
+            _serverUrl = QRSserverURL;
 
             //do a simple first GET to set cookies for subsequent actions (otherwise POST commands wont work)
             try
             {
-                string resp = Get("/qrs/about");
+                Get("/qrs/about");
             }
             catch (Exception ex)
             {
@@ -42,13 +40,13 @@ namespace QVnextDemoBuilder
         public string Put(string endpoint, string content)
         {
             SetHeaders();
-            NameValueCollection queryStringCollection = new NameValueCollection(_queryStringCollection);
+            var queryStringCollection = new NameValueCollection(_queryStringCollection);
 
             _client.QueryString = queryStringCollection;
 
             try
             {
-                return _client.UploadString(serverURL + endpoint, "Put", content);
+                return _client.UploadString(_serverUrl + endpoint, "Put", content);
             }
             catch (WebException ex)
             {
@@ -71,7 +69,7 @@ namespace QVnextDemoBuilder
 
             try
             {
-                return _client.UploadString(serverURL + endpoint, "Put", "");
+                return _client.UploadString(_serverUrl + endpoint, "Put", "");
             }
             catch (WebException ex)
             {
@@ -96,7 +94,7 @@ namespace QVnextDemoBuilder
             {
                 
 
-                return _client.UploadString(serverURL + endpoint, "Post", "");
+                return _client.UploadString(_serverUrl + endpoint, "Post", "");
             }
             catch (WebException ex)
             {
@@ -111,7 +109,7 @@ namespace QVnextDemoBuilder
 
             try
             {
-                return _client.UploadFile(serverURL + endpoint, "Put", filepath);
+                return _client.UploadFile(_serverUrl + endpoint, "Put", filepath);
             }
             catch (WebException ex)
             {
@@ -122,13 +120,10 @@ namespace QVnextDemoBuilder
         public string Post(string endpoint, string content)
         {
             SetHeaders();
-            //NameValueCollection queryStringCollection = new NameValueCollection(_queryStringCollection);
-
-            //_client.QueryString = queryStringCollection;
 
             try
             {
-                return _client.UploadString(serverURL + endpoint, "Post", content);
+                return _client.UploadString(_serverUrl + endpoint, "Post", content);
             }
             catch (WebException ex)
             {
@@ -151,7 +146,7 @@ namespace QVnextDemoBuilder
 
             try
             {
-                byte[] result = _client.UploadFile(serverURL + endpoint, "Post", filepath);
+                byte[] result = _client.UploadFile(_serverUrl + endpoint, "Post", filepath);
                 return Encoding.UTF8.GetString(result, 0, result.Length);
             }
             catch (WebException ex)
@@ -167,7 +162,7 @@ namespace QVnextDemoBuilder
 
             try
             {
-                return _client.UploadString(serverURL + endpoint, "DELETE", "");
+                return _client.UploadString(_serverUrl + endpoint, "DELETE", "");
             }
             catch (WebException ex)
             {
@@ -196,7 +191,7 @@ namespace QVnextDemoBuilder
 
             try
             {
-                string response = _client.DownloadString(serverURL + endpoint);
+                string response = _client.DownloadString(_serverUrl + endpoint);
                 return response;
             }
             catch (WebException ex)
@@ -215,16 +210,13 @@ namespace QVnextDemoBuilder
 
             try
             {
-                _client.DownloadFile(serverURL + endpoint, filepath);
-                return;
+                _client.DownloadFile(_serverUrl + endpoint, filepath);
             }
             catch (WebException ex)
             {
                 throw new Exception(ParseWebException(ex));
             }
         }
-
-
 
         private void SetHeaders()
         {
@@ -236,22 +228,15 @@ namespace QVnextDemoBuilder
             _client.Headers.Add("X-QlikView-xrfkey", "ABCDEFG123456789");
             _client.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36");
 
-            
-
-            //_client.Headers.Add("X-Qlik-User", "UserDirectory=QTSEL; UserId=msi");
-
         }
-
-
-
 
         private static string ParseWebException(WebException exception)
         {
             if (exception.Status == WebExceptionStatus.ConnectFailure || exception.Status == WebExceptionStatus.Timeout)
                 return exception.Status + ": " + exception.Message;
 
-            HttpWebResponse webResponse = (HttpWebResponse)exception.Response;
-            Stream responseStream = webResponse.GetResponseStream();
+            var webResponse = (HttpWebResponse)exception.Response;
+            var responseStream = webResponse.GetResponseStream();
             return webResponse.StatusDescription + (responseStream != null ? ": " + new StreamReader(responseStream).ReadToEnd() : string.Empty);
         }
     }
@@ -262,24 +247,13 @@ namespace QVnextDemoBuilder
 
         public CookieContainer QRSCookieContainer = new CookieContainer();
 
-        private Int32 timeout;
-        public Int32 Timeout
-        {
-            get
-            {
-                return timeout;
-            }
-            set
-            {
-                timeout = value;
-            }
-        }
+        public int Timeout { get; set; }
 
         protected override WebRequest GetWebRequest(Uri address)
         {
-            HttpWebRequest request = (HttpWebRequest)base.GetWebRequest(address);
+            var request = (HttpWebRequest)base.GetWebRequest(address);
             request.CookieContainer = QRSCookieContainer;
-            request.Timeout = this.timeout;
+            request.Timeout = Timeout;
             
             return request;
         }

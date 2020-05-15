@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Net;
-using System.Text;
 using System.Security.Cryptography.X509Certificates;
-using System.Security.Principal;
+using System.Text;
 
-namespace SenseBuilder
+namespace QlikSenseEmailAdmin
 {
     public class QRSWebClient
     {
@@ -25,7 +24,8 @@ namespace SenseBuilder
             serverURL = QRSserverURL;
 			
             ExecuteAs = "UserDirectory=" + Environment.UserDomainName + "; UserId=" + Environment.UserName;
-			//do a simple first GET to set cookies for subsequent actions (otherwise POST commands wont work)
+			
+            //do a simple first GET to set cookies for subsequent actions (otherwise POST commands wont work)
             try
             {
                 string resp = Get("/qrs/about");

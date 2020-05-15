@@ -34,12 +34,6 @@ namespace QlikSenseJSONObjects
     public class QlikSenseCreateReloadTaskRequest
     {
         public string task { get; set; }
-        /*public string appId { get; set; }
-        public string publishTime { get; set; }
-        public bool published { get; set; }
-        public QlikSenseStream stream { get; set; }
-        public object privileges { get; set; }
-        public string id { get; set; }*/
     }
 
     public class QInfo

@@ -1,34 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Net.Http;
 using System.Threading.Tasks;
-
-using QVnextDemoBuilder;
 using Newtonsoft.Json;
-//using Qlik.Engine;
-using MyLogger;
-using Newtonsoft.Json.Serialization;
-using System.IO;
+using QlikSenseJSONObjects;
+using QVnextDemoBuilder;
 
-namespace QlikSenseJSONObjects
+namespace QlikSenseEmailAdmin
 {
-    enum QSTaskStatus { NeverStarted, Triggered, Started, Queued, AbortInitiated, Aborting, Aborted, Success, Failed, Skipped, Retrying, Error, Reset };
+    enum QsTaskStatus { NeverStarted, Triggered, Started, Queued, AbortInitiated, Aborting, Aborted, Success, Failed, Skipped, Retrying, Error, Reset }
+
     class QlikSenseJSONHelper
     {
-        QRSNTLMWebClient qrsClient;
-        Logger logger;
-        
-        string url;
+        private readonly QRSNTLMWebClient _qrsClient;
 
-        public QlikSenseJSONHelper(string url, Int32 timeout, Logger logger)
+        public QlikSenseJSONHelper(string url, int timeout)
         {
-            this.url = url;
-            
-            qrsClient = new QRSNTLMWebClient(url, timeout);
-
-            this.logger = logger;
-
+            _qrsClient = new QRSNTLMWebClient(url, timeout);
         }
 
         public string GetAppID(string appname)
@@ -38,7 +27,7 @@ namespace QlikSenseJSONObjects
 
             //find the app
             string appid = "";
-            string appsstring = qrsClient.Get("/qrs/app", appqueries);
+            string appsstring = _qrsClient.Get("/qrs/app", appqueries);
             List<QlikSenseApp> apps = (List<QlikSenseApp>)JsonConvert.DeserializeObject<List<QlikSenseApp>>(appsstring);
             for (int i = 0; i < apps.Count; i++)
             {
@@ -62,73 +51,49 @@ namespace QlikSenseJSONObjects
             queries.Add("filter", "name eq '" + taskname + "'");
 
             //find the app
-            string taskid = "";
-            string taskstring = qrsClient.Get("/qrs/task", queries);
-            List<QlikSenseTaskResult> tasks = (List<QlikSenseTaskResult>)JsonConvert.DeserializeObject<List<QlikSenseTaskResult>>(taskstring);
+            var taskString = _qrsClient.Get("/qrs/task", queries);
+            var tasks = JsonConvert.DeserializeObject<List<QlikSenseTaskResult>>(taskString);
 
-            int retval = -1;
+            var retval = -1;
             if (tasks.Count == 1)
             {
                 retval = tasks[0].operational.lastExecutionResult.status;
             }
-
             return retval;
         }
 
 
 
-        public List<QlikSenseTaskResult> GetTaskByStatus(QSTaskStatus status)
+        public List<QlikSenseTaskResult> GetTaskByStatus(QsTaskStatus status)
         {
-            Dictionary<string, string> queries = new Dictionary<string, string>();
-
-
-
-
-            //*** Nick Akincilar - 8/31/2016 Modified the code by adding enabled=true to filters so emails are not sent for disabled tasks. 
-
-
-            //queries.Add("filter", "operational.lastExecutionResult.status eq " + Convert.ToString((int)status));
-            queries.Add("filter", "operational.lastExecutionResult.status eq " + Convert.ToString((int)status) + " and enabled eq true");
-            
-            
-
+            var queries = new Dictionary<string, string>
+            {
+                {
+                    "filter", "operational.lastExecutionResult.status eq " + Convert.ToString((int) status) +
+                              " and enabled eq true"
+                }
+            };
 
             //find the app
-            // string taskid = "";
-            string taskstring = qrsClient.Get("/qrs/task/full", queries);
-            List<QlikSenseTaskResult> tasks = (List<QlikSenseTaskResult>)JsonConvert.DeserializeObject<List<QlikSenseTaskResult>>(taskstring);
+            var taskString = _qrsClient.Get("/qrs/task/full", queries);
+            var tasks = JsonConvert.DeserializeObject<List<QlikSenseTaskResult>>(taskString);
             
-          //  List<Customproperty> CustProps = JsonConvert.DeserializeObject<List<Customproperty>>(taskstring);
-
-            //return JsonConvert.DeserializeObject<List<Account>>(json);
-
             return tasks;
         }
 
-
-
-        public string GetTaskByStatusText(QSTaskStatus status)
+        public string GetTaskByStatusText(QsTaskStatus status)
         {
-            Dictionary<string, string> queries = new Dictionary<string, string>();
+            var queries = new Dictionary<string, string>
+            {
+                {
+                    "filter", "operational.lastExecutionResult.status eq " + Convert.ToString((int) status) +
+                              " and enabled eq true"
+                }
+            };
 
+            var taskString = _qrsClient.Get("/qrs/task/full", queries);
 
-
-
-            //*** Nick Akincilar - 8/31/2016 Modified the code by adding enabled=true to filters so emails are not sent for disabled tasks. 
-
-
-            //queries.Add("filter", "operational.lastExecutionResult.status eq " + Convert.ToString((int)status));
-            queries.Add("filter", "operational.lastExecutionResult.status eq " + Convert.ToString((int)status) + " and enabled eq true");
-
-
-
-
-            //find the app
-            // string taskid = "";
-            string taskstring = qrsClient.Get("/qrs/task/full", queries);
-            
-
-            return taskstring;
+            return taskString;
         }
 
 
@@ -141,30 +106,23 @@ namespace QlikSenseJSONObjects
             queries.Add("filter", "operational.lastExecutionResult.status eq " + Convert.ToString((int)status));
 
             //find the app
-            // string taskid = "";
-            string taskstring = qrsClient.Get("/qrs/task/full", queries);
-            List<QlikSenseTaskResultLastExecutionResult> tasks = (List<QlikSenseTaskResultLastExecutionResult>)JsonConvert.DeserializeObject<List<QlikSenseTaskResultLastExecutionResult>>(taskstring);
+            var taskString = _qrsClient.Get("/qrs/task/full", queries);
+            var tasks = JsonConvert.DeserializeObject<List<QlikSenseTaskResultLastExecutionResult>>(taskString);
 
-            int retval = -1;
-            //if (tasks.Count == 1)
-            //{
-            //    retval = tasks[0].operational.lastExecutionResult.status;
-            //}
+            var retval = -1;
 
             return tasks;
         }
 
         public int GetTaskStatus(QlikSenseTaskExecutionGuid taskexecutionguid)
         {
-            Dictionary<string, string> queries = new Dictionary<string, string>();
-            //queries.Add("filter", "name eq '" + taskname + "'");
+            var queries = new Dictionary<string, string>();
 
             //find the app
-            string taskid = "";
-            string taskstring = qrsClient.Get("/qrs/executionresult/"+taskexecutionguid.value, queries);
-            List<QlikSenseTaskResult> tasks = (List<QlikSenseTaskResult>)JsonConvert.DeserializeObject<List<QlikSenseTaskResult>>(taskstring);
+            var taskString = _qrsClient.Get("/qrs/executionresult/"+taskexecutionguid.value, queries);
+            var tasks = JsonConvert.DeserializeObject<List<QlikSenseTaskResult>>(taskString);
 
-            int retval = 0;
+            var retval = 0;
             if (tasks.Count == 1)
             {
                 retval = tasks[0].operational.lastExecutionResult.status;
@@ -173,35 +131,14 @@ namespace QlikSenseJSONObjects
             return retval;
         }
 
-
-
         public string GetTaskFile(string Taskid, string FileRefID)
         {
-            Dictionary<string, string> queries = new Dictionary<string, string>();
-            //queries.Add("filter", "name eq '" + taskname + "'");
-
-            //find the app
-            //string taskid = "";
-            string taskstring = qrsClient.Get("/qrs/ReloadTask/" + Taskid + "/scriptlog?fileReferenceId=" + FileRefID + "&xrfkey=ABCDEFG123456789", queries );
-
-
-
+            var queries = new Dictionary<string, string>();
+            var taskstring = _qrsClient.Get("/qrs/ReloadTask/" + Taskid + "/scriptlog?fileReferenceId=" + FileRefID + "&xrfkey=ABCDEFG123456789", queries );
             
+            taskstring = taskstring.Substring(10,36);
 
-
-
-            taskstring = taskstring.ToString().Substring(10,36);
-
-
-             taskstring = qrsClient.Get("/qrs/download/reloadtask/" + taskstring + "/Mylog.txt&xrfkey=ABCDEFG123456789", queries);
-
-            //List<QlikSenseTaskResult> tasks = (List<QlikSenseTaskResult>)JsonConvert.DeserializeObject<List<QlikSenseTaskResult>>(taskstring);
-
-            //int retval = 0;
-            //if (tasks.Count == 1)
-            //{
-            //    retval = tasks[0].operational.lastExecutionResult.status;
-            //}
+            taskstring = _qrsClient.Get("/qrs/download/reloadtask/" + taskstring + "/Mylog.txt&xrfkey=ABCDEFG123456789", queries);
 
             return taskstring;
         }
@@ -209,132 +146,94 @@ namespace QlikSenseJSONObjects
 
         public string GetStreamID(string streamname)
         {
-            Dictionary<string, string> streamqueries = new Dictionary<string, string>();
-            streamqueries.Add("filter", "name eq '" + streamname + "'");
+            var streamQueries = new Dictionary<string, string>();
+            streamQueries.Add("filter", "name eq '" + streamname + "'");
 
             //find the stream
-            string streamid = "";
-            string streamstring = qrsClient.Get("/qrs/stream", streamqueries);
-            List<QlikSenseStream> streams = (List<QlikSenseStream>)JsonConvert.DeserializeObject<List<QlikSenseStream>>(streamstring);
-            for (int i = 0; i < streams.Count; i++)
+            var streamId = "";
+            var streamString = _qrsClient.Get("/qrs/stream", streamQueries);
+            var streams = JsonConvert.DeserializeObject<List<QlikSenseStream>>(streamString);
+            foreach (var stream in streams.Where(stream => stream.name == streamname))
             {
-                if (streams[i].name == streamname)
-                {
-                    streamid = streams[i].id;
-
-                }
+                streamId = stream.id;
             }
 
-            if (streamid == "")
+            if (streamId == "")
             {
                 throw new Exception("Couldn't find stream");
             }
-            return streamid;
+            return streamId;
         }
 
-        public QlikSenseApp GetApp(string appname)
+        public QlikSenseApp GetApp(string appName)
         {
-            Dictionary<string, string> appqueries = new Dictionary<string, string>();
-            appqueries.Add("filter", "name eq '" + appname + "'");
+            var appQueries = new Dictionary<string, string>();
+            appQueries.Add("filter", "name eq '" + appName + "'");
 
             //find the app
-            string appsstring = qrsClient.Get("/qrs/app", appqueries);
-            List<QlikSenseApp> apps = (List<QlikSenseApp>)JsonConvert.DeserializeObject<List<QlikSenseApp>>(appsstring);
-            for (int i = 0; i < apps.Count; i++)
-            {
-                if (apps[i].name == appname)
-                {
-                    return apps[i];
-                }
-            }
-
-            return null;
+            var appString = _qrsClient.Get("/qrs/app", appQueries);
+            var apps = JsonConvert.DeserializeObject<List<QlikSenseApp>>(appString);
+            return apps.FirstOrDefault(app => app.name == appName);
         }
 
         public string CopyApp(string appid, string name)
         {
-            string endpoint = "/qrs/app/" + appid + "/copy";
-            string newappjson = "";
+            var endpoint = "/qrs/app/" + appid + "/copy";
+            var newAppJson = "";
             if (name != "")
             {
-                Dictionary<string, string> queries = new Dictionary<string, string>();
-                queries.Add("name", name);
-                newappjson = qrsClient.Post(endpoint, queries);
+                var queries = new Dictionary<string, string> {{"name", name}};
+                newAppJson = _qrsClient.Post(endpoint, queries);
             }
             else
             {
-                newappjson = qrsClient.Post(endpoint, "");
+                newAppJson = _qrsClient.Post(endpoint, "");
             }
-            QlikSenseApp newapp = (QlikSenseApp)JsonConvert.DeserializeObject<QlikSenseApp>(newappjson);
-            return newapp.id;
+            var newApp = JsonConvert.DeserializeObject<QlikSenseApp>(newAppJson);
+            return newApp.id;
         }
 
         public void Reload(string appid)
         {
-            qrsClient.Post("/qrs/app/" + appid + "/reload", "");
+            _qrsClient.Post("/qrs/app/" + appid + "/reload", "");
         }
 
         public void StartTask(string taskid, bool synchronous)
         {
-            string path = "/qrs/task/" + taskid + "/start";
+            var path = "/qrs/task/" + taskid + "/start";
             if (synchronous) path += "/synchronous";
 
-            Dictionary<string, string> queries = new Dictionary<string, string>();
-            //queries.Add("name", taskname);
-
-            //try
-            //{
-                qrsClient.Post(path, "");
-            //}
-            //catch(Exception e)
-            //{
-                
-            //}
+            _qrsClient.Post(path, "");
         }
 
-        public QlikSenseTaskExecutionGuid StartTaskByName(string taskname, bool synchronous)
+        public QlikSenseTaskExecutionGuid StartTaskByName(string taskName, bool synchronous)
         {
-            int retval = 0;
-
-            string path = "/qrs/task/start";
+            var path = "/qrs/task/start";
             if (synchronous) path += "/synchronous";
-            
-            Dictionary<string, string> queries = new Dictionary<string, string>();
-            queries.Add("name", taskname);
 
-            string newtaskjsonout = "";
+            var queries = new Dictionary<string, string> {{"name", taskName}};
+
+            string newTaskJsonOut;
             try
             {
-                newtaskjsonout = qrsClient.Post(path, queries);
+                newTaskJsonOut = _qrsClient.Post(path, queries);
             }
             catch (Exception e)
             {
-                throw e;
+                throw new HttpRequestException("Error executing post request", e);
             }
 
-            return (QlikSenseTaskExecutionGuid)JsonConvert.DeserializeObject<QlikSenseTaskExecutionGuid>(newtaskjsonout);
+            return JsonConvert.DeserializeObject<QlikSenseTaskExecutionGuid>(newTaskJsonOut);
             //should change to use the execution result API
         }
 
-        /*public void CheckTask(string guid)
-        {
-            string path = "/qrs/task/table";
-
-            Dictionary<string, string> queries = new Dictionary<string, string>();
-            queries.Add("filter", "id eq '" + guid + "'");
-
-            string newtaskjsonout = qrsClient.Post(path, queries);
-            QlikSenseTaskGuid result = (QlikSenseTaskGuid)JsonConvert.DeserializeObject<QlikSenseTaskGuid>(newtaskjsonout);
-        }*/
-
-        public void Publish(string appid, string streamid)
+        public void Publish(string appid, string streamId)
         {
             try
             {
-                Dictionary<string, string> appqueries = new Dictionary<string, string>();
-                appqueries.Add("stream", streamid);
+                var appQueries = new Dictionary<string, string> {{"stream", streamId}};
 
-                qrsClient.Put("/qrs/app/" + appid + "/publish", appqueries);
+                _qrsClient.Put("/qrs/app/" + appid + "/publish", appQueries);
             }
             catch (Exception e)
             {
@@ -346,9 +245,7 @@ namespace QlikSenseJSONObjects
         {
             try
             {
-                Dictionary<string, string> appqueries = new Dictionary<string, string>();
-                appqueries.Add("app", oldappid);
-                string result = qrsClient.Post("/qrs/app/" + newappid + "/replace", "");
+                _qrsClient.Post("/qrs/app/" + newappid + "/replace", "");
             }
             catch (Exception e)
             {
@@ -358,179 +255,45 @@ namespace QlikSenseJSONObjects
 
         public void Delete(string appid)
         {
-            qrsClient.Delete("/qrs/app/" + appid);
+            _qrsClient.Delete("/qrs/app/" + appid);
         }
-
-        /*private IApp GetAppHandle(string appid)
-        {
-            Uri uri = new Uri(url);
-            ILocation remoteQlikSenseLocation = Qlik.Engine.Location.FromUri(uri);
-            remoteQlikSenseLocation.AsNtlmUserViaProxy();
-            IAppIdentifier appidentifier = remoteQlikSenseLocation.AppWithId(appid);
-            return remoteQlikSenseLocation.App(appidentifier);
-        }*/
 
         public string CreateTask(string appid, string appname, string taskname)
         {
-            string endpoint = "/qrs/reloadtask/create";
+            const string endpoint = "/qrs/reloadtask/create";
 
-            QlikSenseCreateTask task = new QlikSenseCreateTask();
-            task.task = new QlikSenseTask();
-            task.task.name = taskname;
-            task.task.taskType = 0;
-            task.task.enabled = true;
-            task.task.taskSessionTimeout = 1440;
-            task.task.maxRetries = 0;
-            task.task.tags = new List<object>();
-            
-            task.task.app = new QlikSenseTaskApp();
-            task.task.app.id = appid;
-            task.task.app.name = appname;
+            var task = new QlikSenseCreateTask
+            {
+                task = new QlikSenseTask
+                {
+                    name = taskname,
+                    taskType = 0,
+                    enabled = true,
+                    taskSessionTimeout = 1440,
+                    maxRetries = 0,
+                    tags = new List<object>(),
+                    app = new QlikSenseTaskApp {id = appid, name = appname}
+                }
+            };
+
             task.task.isManuallyTriggered = true;
             task.task.customProperties = new List<object>();
 
-            string newtaskjsonin = JsonConvert.SerializeObject(task);
+            var newTaskJsonIn = JsonConvert.SerializeObject(task);
 
-            string newtaskjsonout = qrsClient.Post(endpoint, newtaskjsonin);
-            QlikSenseCreateTaskResult result = (QlikSenseCreateTaskResult)JsonConvert.DeserializeObject<QlikSenseCreateTaskResult>(newtaskjsonout);
+            var newTaskJsonOut = _qrsClient.Post(endpoint, newTaskJsonIn);
+            var result = JsonConvert.DeserializeObject<QlikSenseCreateTaskResult>(newTaskJsonOut);
             
             return result.id;
         }
 
-
-
-        public List<QlikSenseUserList> GetDeletedUserList(QSTaskStatus status)
+        public List<QlikSenseUserList> GetDeletedUserList(QsTaskStatus status)
         {
-            Dictionary<string, string> queries = new Dictionary<string, string>();
-
-
-
-
-            //*** Nick Akincilar - 8/31/2016 Modified the code by adding enabled=true to filters so emails are not sent for disabled tasks. 
-
-
-            //queries.Add("filter", "operational.lastExecutionResult.status eq " + Convert.ToString((int)status));
-            queries.Add("filter", "removedExternally+eq+True");
-
-
-
-
-            //find the app
-            // string taskid = "";
-            string userstring = qrsClient.Get("/qrs/User/full/", queries);
-            List<QlikSenseUserList> users = (List<QlikSenseUserList>)JsonConvert.DeserializeObject<List<QlikSenseUserList>>(userstring);
-
-            
-
-            //  List<Customproperty> CustProps = JsonConvert.DeserializeObject<List<Customproperty>>(taskstring);
-
-            //return JsonConvert.DeserializeObject<List<Account>>(json);
+            var queries = new Dictionary<string, string> {{"filter", "removedExternally+eq+True"}};
+            var userString = _qrsClient.Get("/qrs/User/full/", queries);
+            var users = JsonConvert.DeserializeObject<List<QlikSenseUserList>>(userString);
 
             return users;
         }
-        /*private void PrependScript(IApp app, string script)
-        {
-
-            string mainscript = app.GetScript();
-            script = "///$tab LoopAndReduce\r\n" + script + "\r\n\r\n" + mainscript;
-            app.SetScript(script);
-            //app2.DoSave();
-
-        }*/
-
-        /*public void SetLoopAndReduceInfo(string appid, string loopandreducefield, string loopandreducevalue)
-        {
-            IApp apphandle = GetAppHandle(appid);
-            string script = "set vLoopAndReduceFieldName = '" + loopandreducefield + "';\r\nset vLoopAndReduceFieldValue = '" + loopandreducevalue + "';\r\n\r\n";
-            PrependScript(apphandle, script);
-
-        }*/
-
-        /*public void SetLoopAndReduceInfoBinary(string appid, string binaryfile)
-        {
-            IApp apphandle = GetAppHandle(appid);
-            //binary [c:\QTARCHLAB\QlikStorage\LoopAndReduce\MyQlikView11App - A.qvw];
-            string script = "binary [" + binaryfile + "];\r\n\r\n";
-            PrependScript(apphandle, script);
-        }*/
-
-        /*public List<string> GetFieldValues(string appid, string field)
-        {
-            IApp apphandle = GetAppHandle(appid);
-            //var inlineDimension = new ListboxListObjectDimensionDef { FieldDefs = new[] { field } };
-
-            NxInlineDimensionDef inline = new NxInlineDimensionDef { FieldDefs = new[] { field } };
-
-            ListObjectDef lo = new ListObjectDef();
-
-            lo.Def = inline;
-
-            GenericObjectProperties prop = new GenericObjectProperties();
-            prop.Add(lo);
-
-            try
-            {
-
-                CreateGenericObjectResult obj = apphandle.CreateGenericObject(prop);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-            }
-//            apphandle.AddFieldFromExpression
-            
-
-            //List l = new ListObject();
-            
-            
-            //apphandle.CreateGenericObject(prop);
-            return null;
-            
-
-            
-        }*/
-
-
-        //string apps = qrsClient.Get("/qrs/about");
-        //QlikSenseAboutObject about = (QlikSenseAboutObject)JsonConvert.DeserializeObject <QlikSenseAboutObject>(apps);
-        //string s = about.buildDate;
-        /* public List<string> GetFieldValues(string appid, string field)
-         {
-
-             /*Field fld = app2.GetField(field);
-             fld.Clear();
-             int numvalues = fld.GetCardinal();
-
-             List<string> fields = new List<string>();
-             fields.Add(field);
-
-             CreateSessionObjectParam param = new CreateSessionObjectParam();
-             param.qInfo.qId = "LoopField";
-             param.qInfo.qType = "ListObject";
-             param.qListObjectDef.qDef.qFieldDefs = fields;
-
-             //DynamicJson json = new DynamicJson();
-             //json. = JsonConvert.SerializeObject(param);
-
-             //GenericObjectProperties prop = new GenericObjectProperties();
-             //prop.Add();
-
-
-
-             //GenericObject o = app2.CreateGenericSessionObject(prop);
-
-                 //GetListObjectData
-
-            // List<string> fields = new List<string>();
-
-             /*string script = app2.GetScript();
-             script = "///$tab LoopAndReduceValues\r\nset vLoopAndReduceFieldName = 'Store';\r\nset vLoopAndReduceFieldValue = 'StoreName#1';\r\n\r\n" + script;
-             app2.SetScript(script);
-             //app2.DoSave();
-
-             //app2.DoReload();    //switch to async!!!
-
-            // return fields;
-         }*/
     }
 }
