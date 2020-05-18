@@ -25,7 +25,7 @@ namespace QlikSenseEmailAdmin
             //***
             // Use at your own risk.  Created by Marcus Spitzmiller and Nick Akincilar.
             Console.WriteLine();
-
+            // After looking at the code, definitely use at your own risk -- SBentley
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
             var logger = new Logger();
@@ -303,7 +303,7 @@ namespace QlikSenseEmailAdmin
 
                         if (myTaskResult[i] != null && myTaskResult[i].customProperties.Count > 0)
                         {
-                            var customProp = 0;
+                            var customProp;
                             for (customProp = 0;
                                 customProp <= myTaskResult[i].customProperties.Count - 1;
                                 customProp++)
@@ -350,8 +350,7 @@ namespace QlikSenseEmailAdmin
                             {
                                 var emailStatus = false;
                                 existingTask = true;
-                                if (fileLastEmailDate.AddHours(24) < DateTime.Now
-                                ) // Send email if last email is sent more than 24 hours ago.
+                                if (fileLastEmailDate.AddHours(24) < DateTime.Now) // Send email if last email is sent more than 24 hours ago.
                                 {
                                     alertCount = +1;
                                     logger.Log(LogLevel.Information, "Sending Email For " + curTaskName + " ....");
@@ -418,37 +417,40 @@ namespace QlikSenseEmailAdmin
                     File.Delete(file.FullName);
         }
 
-        private static void SendEmail(string TaskName, string TaskDate, string SendFrom, string UserID, string Password,
-            string SendTo, string SMTPServer, int SmtpPort, string EnableSsl, string FileData, string ErrorMsg)
+        private static void SendEmail(string taskName, string taskDate, string sendFrom, string userId, string password,
+            string sendTo, string smtpServer, int smtpPort, string enableSsl, string fileData, string errorMsg)
         {
+            if (password == null) throw new ArgumentNullException(nameof(password));
+            if (smtpServer == null) throw new ArgumentNullException(nameof(smtpServer));
+            if (fileData == null) throw new ArgumentNullException(nameof(fileData));
             var message = new MailMessage();
 
 
-            var byteArray = Encoding.UTF8.GetBytes(FileData);
+            var byteArray = Encoding.UTF8.GetBytes(fileData);
             var stream = new MemoryStream(byteArray);
 
             // Create  the file attachment for this email message.
-            var data = new Attachment(stream, TaskName + "_" + TaskDate + "_Log.txt", MediaTypeNames.Text.Plain);
+            var data = new Attachment(stream, taskName + "_" + taskDate + "_Log.txt", MediaTypeNames.Text.Plain);
 
             // Add time stamp information for the file.
             // Add the file attachment to this email message.
             message.Attachments.Add(data);
-            message.To.Add(SendTo);
-            message.Subject = "Qliksense Task Failure: " + TaskName;
+            message.To.Add(sendTo);
+            message.Subject = "Qliksense Task Failure: " + taskName;
 
-            message.From = new MailAddress(SendFrom);
+            message.From = new MailAddress(sendFrom);
             message.IsBodyHtml = true;
             message.Body =
                 "<h1 style=\"font-family:Arial;color: #04B431;\" >Automated QlikSense Task Failure Alert!</h1> <div style=\"font-family:Arial;\">  Following QlikSense task has failed to run:<br> <br> Task Name = <strong>"
-                + TaskName + "</strong><br>Failure Date = <strong> " + TaskDate + "</strong> <br>Error = <strong> " +
-                ErrorMsg + "</strong><br><br> No new alerts will be sent for this task for the next 24 hours! </div>";
+                + taskName + "</strong><br>Failure Date = <strong> " + taskDate + "</strong> <br>Error = <strong> " +
+                errorMsg + "</strong><br><br> No new alerts will be sent for this task for the next 24 hours! </div>";
 
-            var smtp = new SmtpClient(SMTPServer, SmtpPort)
+            var smtp = new SmtpClient(smtpServer, smtpPort)
             {
                 UseDefaultCredentials = false,
 
-                Credentials = new NetworkCredential(UserID, Password),
-                EnableSsl = EnableSsl == "Y"
+                Credentials = new NetworkCredential(userId, password),
+                EnableSsl = enableSsl == "Y"
             };
 
             smtp.Send(message);
