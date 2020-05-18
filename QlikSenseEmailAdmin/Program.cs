@@ -303,7 +303,7 @@ namespace QlikSenseEmailAdmin
 
                         if (myTaskResult[i] != null && myTaskResult[i].customProperties.Count > 0)
                         {
-                            var customProp;
+                            int customProp;
                             for (customProp = 0;
                                 customProp <= myTaskResult[i].customProperties.Count - 1;
                                 customProp++)
