@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using QlikSenseJSONObjects;
 using QVnextDemoBuilder;
@@ -18,27 +15,6 @@ namespace QlikSenseEmailAdmin
         public QlikSenseJSONHelper(string url, int timeout)
         {
             _qrsClient = new QRSNTLMWebClient(url, timeout);
-        }
-
-        public string GetAppID(string appname)
-        {
-            Dictionary<string, string> appqueries = new Dictionary<string, string>();
-            appqueries.Add("filter", "name eq '" + appname + "'");
-
-            //find the app
-            var appid = "";
-            var appString = _qrsClient.Get("/qrs/app", appqueries);
-            var apps = JsonConvert.DeserializeObject<List<QlikSenseApp>>(appString);
-            foreach (var app in apps.Where(app => app.name == appname))
-            {
-                appid = app.id;
-            }
-
-            if (appid == "")
-            {
-                throw new Exception("Couldn't find app");
-            }
-            return appid;
         }
 
         public List<QlikSenseTaskResult> GetTaskByStatus(QsTaskStatus status)

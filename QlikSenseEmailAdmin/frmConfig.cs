@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
@@ -7,6 +8,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using Microsoft.Win32.TaskScheduler;
 using MyLogger;
+using QlikSenseJSONObjects;
 using QVnextDemoBuilder;
 
 namespace QlikSenseEmailAdmin
@@ -105,11 +107,9 @@ namespace QlikSenseEmailAdmin
                              "\\QlikSenseEmailAdmin\\history");
                 logger.SetLogLevel(LogLevel.Debug);
 
-                var qs = new QlikSenseJSONHelper(tb_qsurl.Text.Trim(), Convert.ToInt32(tb_wait.Text));
-
                 logger.Log(LogLevel.Information, "Looking for Failed Tasks...");
 
-
+                var qs = new QlikSenseJSONHelper(tb_qsurl.Text.Trim(), Convert.ToInt32(tb_wait.Text));
                 var taskList = qs.GetTaskByStatus(QsTaskStatus.Failed);
 
                 if (taskList.Count > 0) MessageBox.Show("QMC Connetion Success!");
@@ -124,7 +124,7 @@ namespace QlikSenseEmailAdmin
         {
             try
             {
-                var Emailresult = SendTestEmail();
+                var Emailresult = SendTestEmail(" \"This is a test email form QlikSense Task Alert tool.\"");
 
                 MessageBox.Show("Test Email sent successfully!");
             }
@@ -135,7 +135,7 @@ namespace QlikSenseEmailAdmin
             }
         }
 
-        private bool SendTestEmail()
+        private bool SendTestEmail(string body)
         {
             var message = new MailMessage();
 
@@ -144,7 +144,7 @@ namespace QlikSenseEmailAdmin
 
             message.From = new MailAddress(tb_emailfrom.Text);
             message.IsBodyHtml = false;
-            message.Body = "This is a test email form QlikSense Task Alert tool.";
+            message.Body = body;
 
             var smtp = new SmtpClient(tb_server.Text, Convert.ToInt32(tb_port.Text))
             {
@@ -282,6 +282,33 @@ namespace QlikSenseEmailAdmin
             Retrying,
             Error,
             Reset
+        }
+
+        private void ApiEmailButton_Click(object sender, EventArgs e)
+        {
+            List<QlikSenseTaskResult> taskList = null;
+            try
+            {
+                var qs = new QlikSenseJSONHelper(tb_qsurl.Text.Trim(), Convert.ToInt32(tb_wait.Text));
+                taskList = qs.GetTaskByStatus(QsTaskStatus.Failed);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error connecting to qlik: {ex.Message}");
+            }
+
+            if (taskList == null || taskList.Count <= 0) return;
+            try
+            {
+                SendTestEmail($"Found {Convert.ToString(taskList.Count)} failed tasks");
+                MessageBox.Show("QMC Connection Success!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error sending email: {ex.Message}");
+            }
+
+            
         }
     }
 }

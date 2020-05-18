@@ -73,6 +73,7 @@
             this.ViewSendHistory = new System.Windows.Forms.Button();
             this.ViewLog = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.ApiEmailButton = new System.Windows.Forms.Button();
             this.label17 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -272,9 +273,9 @@
             // 
             // button_email
             // 
-            this.button_email.Location = new System.Drawing.Point(304, 96);
+            this.button_email.Location = new System.Drawing.Point(295, 96);
             this.button_email.Name = "button_email";
-            this.button_email.Size = new System.Drawing.Size(92, 27);
+            this.button_email.Size = new System.Drawing.Size(101, 40);
             this.button_email.TabIndex = 19;
             this.button_email.Text = "Test Email";
             this.button_email.UseVisualStyleBackColor = true;
@@ -427,10 +428,11 @@
             this.label12.ForeColor = System.Drawing.Color.ForestGreen;
             this.label12.Location = new System.Drawing.Point(98, 671);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(372, 26);
+            this.label12.Size = new System.Drawing.Size(372, 39);
             this.label12.TabIndex = 23;
             this.label12.Text = "QlikSense Email Alert tool is not an official Qlik Product. Use at your own risk." +
-    " \r\nCreated By Nick Akincilar && Marcus Spitzmiller   - Version 1.4c\r\n";
+    " \r\nCreated By Nick Akincilar && Marcus Spitzmiller - Version 1.4c\r\n Modified by " +
+    "Sam Bentley";
             this.label12.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // panel1
@@ -506,6 +508,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.ApiEmailButton);
             this.groupBox3.Controls.Add(this.label14);
             this.groupBox3.Controls.Add(this.label16);
             this.groupBox3.Controls.Add(this.label8);
@@ -520,13 +523,24 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Where to Send Alerts?";
             // 
+            // ApiEmailButton
+            // 
+            this.ApiEmailButton.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.ApiEmailButton.Location = new System.Drawing.Point(403, 96);
+            this.ApiEmailButton.Name = "ApiEmailButton";
+            this.ApiEmailButton.Size = new System.Drawing.Size(100, 40);
+            this.ApiEmailButton.TabIndex = 24;
+            this.ApiEmailButton.Text = "Test Email and API";
+            this.ApiEmailButton.UseVisualStyleBackColor = true;
+            this.ApiEmailButton.Click += new System.EventHandler(this.ApiEmailButton_Click);
+            // 
             // label17
             // 
             this.label17.AutoSize = true;
             this.label17.ForeColor = System.Drawing.Color.OrangeRed;
-            this.label17.Location = new System.Drawing.Point(333, 4);
+            this.label17.Location = new System.Drawing.Point(370, 7);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(111, 13);
+            this.label17.Size = new System.Drawing.Size(45, 13);
             this.label17.TabIndex = 30;
             this.label17.Text = "TLS 1.2";
             // 
@@ -617,5 +631,6 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button DeleteUsers;
         private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Button ApiEmailButton;
     }
 }
