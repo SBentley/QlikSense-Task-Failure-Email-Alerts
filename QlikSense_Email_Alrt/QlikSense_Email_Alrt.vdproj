@@ -15,14 +15,50 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_0500FE4C3391CD5CDB13AB8A19BFD87A"
+        "OwnerKey" = "8:_A29FE91F640B4BB2B834D5323C829355"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_0500FE4C3391CD5CDB13AB8A19BFD87A"
+        "OwnerKey" = "8:_771E223668E11562F1D7CBDDB75FD057"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_0500FE4C3391CD5CDB13AB8A19BFD87A"
+        "OwnerKey" = "8:_7BCB9CD685F28BF7073FDE30EB3FFD97"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_1E117A3FAD334FFFB759A7B27906529B"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_994CA61853E2CFA81ACB07E8136F6757"
+        "MsmKey" = "8:_688ADB77FF2468477894892133685E87"
         "OwnerKey" = "8:_A29FE91F640B4BB2B834D5323C829355"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_771E223668E11562F1D7CBDDB75FD057"
+        "OwnerKey" = "8:_A29FE91F640B4BB2B834D5323C829355"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_7BCB9CD685F28BF7073FDE30EB3FFD97"
+        "OwnerKey" = "8:_A29FE91F640B4BB2B834D5323C829355"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_7BCB9CD685F28BF7073FDE30EB3FFD97"
+        "OwnerKey" = "8:_771E223668E11562F1D7CBDDB75FD057"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -33,44 +69,50 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_AA3FB75C773AE17E854CDBEB9EB0814A"
-        "OwnerKey" = "8:_A29FE91F640B4BB2B834D5323C829355"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_E72836D8752E414B96488B86458BC5CD"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_EA66461AA3018177F3951B21B7BA3CA5"
+        "MsmKey" = "8:_EB2D527FA0355333FE1DB3A78FA5A2C7"
         "OwnerKey" = "8:_A29FE91F640B4BB2B834D5323C829355"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_0500FE4C3391CD5CDB13AB8A19BFD87A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_A29FE91F640B4BB2B834D5323C829355"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_994CA61853E2CFA81ACB07E8136F6757"
+        "OwnerKey" = "8:_771E223668E11562F1D7CBDDB75FD057"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_EA66461AA3018177F3951B21B7BA3CA5"
+        "OwnerKey" = "8:_EB2D527FA0355333FE1DB3A78FA5A2C7"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_AA3FB75C773AE17E854CDBEB9EB0814A"
+        "OwnerKey" = "8:_688ADB77FF2468477894892133685E87"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_7BCB9CD685F28BF7073FDE30EB3FFD97"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -132,10 +174,10 @@
             "ComponentsUrl" = "8:"
                 "Items"
                 {
-                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.5"
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7"
                     {
-                    "Name" = "8:Microsoft .NET Framework 4.5 (x86 and x64)"
-                    "ProductCode" = "8:.NETFramework,Version=v4.5"
+                    "Name" = "8:Microsoft .NET Framework 4.7 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7"
                     }
                 }
             }
@@ -160,7 +202,7 @@
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
-                "FrameworkVersion" = "8:.NETFramework,Version=v4.5"
+                "FrameworkVersion" = "8:.NETFramework,Version=v4.7"
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=395269"
                 }
@@ -168,6 +210,37 @@
         }
         "File"
         {
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_0500FE4C3391CD5CDB13AB8A19BFD87A"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:System.IO.Compression, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+                "ScatterAssemblies"
+                {
+                    "_0500FE4C3391CD5CDB13AB8A19BFD87A"
+                    {
+                    "Name" = "8:System.IO.Compression.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:System.IO.Compression.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_D177ED1C963F4584AE0A88ECEAA91F54"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1E117A3FAD334FFFB759A7B27906529B"
             {
             "SourcePath" = "8:..\\QlikSenseEmailAdmin\\Settings\\log.txt"
@@ -188,20 +261,20 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_994CA61853E2CFA81ACB07E8136F6757"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_688ADB77FF2468477894892133685E87"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:System.Net.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
                 "ScatterAssemblies"
                 {
-                    "_994CA61853E2CFA81ACB07E8136F6757"
+                    "_688ADB77FF2468477894892133685E87"
                     {
-                    "Name" = "8:Newtonsoft.Json.dll"
+                    "Name" = "8:System.Net.Http.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:Newtonsoft.Json.dll"
+            "SourcePath" = "8:System.Net.Http.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_D177ED1C963F4584AE0A88ECEAA91F54"
@@ -219,20 +292,51 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_AA3FB75C773AE17E854CDBEB9EB0814A"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_771E223668E11562F1D7CBDDB75FD057"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:System.Net.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
+            "AssemblyAsmDisplayName" = "8:Microsoft.Win32.TaskScheduler, Version=2.8.18.0, Culture=neutral, PublicKeyToken=c416bc1b32d97233, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_AA3FB75C773AE17E854CDBEB9EB0814A"
+                    "_771E223668E11562F1D7CBDDB75FD057"
                     {
-                    "Name" = "8:System.Net.Http.dll"
+                    "Name" = "8:Microsoft.Win32.TaskScheduler.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:System.Net.Http.dll"
+            "SourcePath" = "8:Microsoft.Win32.TaskScheduler.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_D177ED1C963F4584AE0A88ECEAA91F54"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_7BCB9CD685F28BF7073FDE30EB3FFD97"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:System.IO.Compression.FileSystem, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+                "ScatterAssemblies"
+                {
+                    "_7BCB9CD685F28BF7073FDE30EB3FFD97"
+                    {
+                    "Name" = "8:System.IO.Compression.FileSystem.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:System.IO.Compression.FileSystem.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_D177ED1C963F4584AE0A88ECEAA91F54"
@@ -270,20 +374,20 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_EA66461AA3018177F3951B21B7BA3CA5"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_EB2D527FA0355333FE1DB3A78FA5A2C7"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Microsoft.Win32.TaskScheduler, Version=2.5.15.0, Culture=neutral, PublicKeyToken=0d013ddd5178a2ae, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_EA66461AA3018177F3951B21B7BA3CA5"
+                    "_EB2D527FA0355333FE1DB3A78FA5A2C7"
                     {
-                    "Name" = "8:Microsoft.Win32.TaskScheduler.dll"
+                    "Name" = "8:Newtonsoft.Json.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:Microsoft.Win32.TaskScheduler.dll"
+            "SourcePath" = "8:Newtonsoft.Json.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_D177ED1C963F4584AE0A88ECEAA91F54"
@@ -424,7 +528,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:QlikSense Email Alert"
         "ProductCode" = "8:{D475A823-505F-403A-8691-E0DBEA495CB2}"
-        "PackageCode" = "8:{B809BDF4-1A2D-4BF7-9856-DDA970A4ACB9}"
+        "PackageCode" = "8:{F098016E-E358-4890-A48A-E3D4EAD72E98}"
         "UpgradeCode" = "8:{76212DD8-0EFF-4E38-A53D-E3C61FD803BA}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -1017,7 +1121,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_A29FE91F640B4BB2B834D5323C829355"
             {
-            "SourcePath" = "8:..\\QlikSenseEmailAdmin\\obj\\Debug\\QlikSenseEmailAdmin.exe"
+            "SourcePath" = "8:..\\QlikSenseEmailAdmin\\obj\\Release\\QlikSenseEmailAdmin.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_D177ED1C963F4584AE0A88ECEAA91F54"

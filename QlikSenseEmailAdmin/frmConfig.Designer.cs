@@ -528,7 +528,7 @@
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(111, 13);
             this.label17.TabIndex = 30;
-            this.label17.Text = "SBentley Version 0.01";
+            this.label17.Text = "TLS 1.2";
             // 
             // frmConfig
             // 

@@ -1,24 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using System.IO;
-using QlikSenseJSONObjects;
 using System.Diagnostics;
-using MyLogger;
+using System.IO;
+using System.Net;
 using System.Net.Mail;
 using System.Reflection;
-using QVnextDemoBuilder;
+using System.Windows.Forms;
 using Microsoft.Win32.TaskScheduler;
+using MyLogger;
+using QVnextDemoBuilder;
 
 namespace QlikSenseEmailAdmin
 {
     public partial class frmConfig : Form
     {
-
-        enum TaskStatus { NeverStarted, Triggered, Started, Queued, AbortInitiated, Aborting, Aborted, Success, Failed, Skipped, Retrying, Error, Reset };
-
         //private QlikSenseJSONHelper qs;
-        private QlikSenseAlertRegistry QSReg = new QlikSenseAlertRegistry();
+        private readonly QlikSenseAlertRegistry QSReg = new QlikSenseAlertRegistry();
+
         public frmConfig()
         {
             InitializeComponent();
@@ -26,12 +23,10 @@ namespace QlikSenseEmailAdmin
 
         private void button1_Click(object sender, EventArgs e)
         {
-
-
             QSReg.SetQmcServer(tb_qsurl.Text.Trim());
 
             QSReg.SetSmptServer(tb_server.Text.Trim());
-            
+
             QSReg.SetSsl(cb_ssl.Checked);
 
             QSReg.SetUsername(tb_username.Text.Trim());
@@ -49,223 +44,164 @@ namespace QlikSenseEmailAdmin
             QSReg.SetEmailPropertyName(tb_CustomProperty.Text.Trim());
 
             MessageBox.Show("Setting are saved successfully", "QlikSense Email Alert", MessageBoxButtons.OK);
-
         }
 
         private void label4_Click(object sender, EventArgs e)
         {
-
         }
+
         private void textBox4_TextChanged(object sender, EventArgs e)
         {
-
         }
 
         private void frmConfig_Load(object sender, EventArgs e)
         {
-            ToolTip tooltip = new ToolTip();
-            tooltip.SetToolTip(tb_CustomProperty, "Create a custom property in QMC, Populate it with emails" + System.Environment.NewLine + "then assign one or more email(s) to individual tasks using this property.");
-            tooltip.SetToolTip(label15, "Create a custom property in QMC, Populate it with emails" + System.Environment.NewLine + "then assign one or more email(s) to individual tasks using this property.");
+            var tooltip = new ToolTip();
+            tooltip.SetToolTip(tb_CustomProperty,
+                "Create a custom property in QMC, Populate it with emails" + Environment.NewLine +
+                "then assign one or more email(s) to individual tasks using this property.");
+            tooltip.SetToolTip(label15,
+                "Create a custom property in QMC, Populate it with emails" + Environment.NewLine +
+                "then assign one or more email(s) to individual tasks using this property.");
 
-            tooltip.SetToolTip(tb_emailto, "Default email address to send alerts if a custom alert property is not" + System.Environment.NewLine + "setup or populated for an individual task");
-            tooltip.SetToolTip(label8, "Default email address to send alerts if a custom alert property is not" + System.Environment.NewLine + "setup or populated for an individual task");
+            tooltip.SetToolTip(tb_emailto,
+                "Default email address to send alerts if a custom alert property is not" + Environment.NewLine +
+                "setup or populated for an individual task");
+            tooltip.SetToolTip(label8,
+                "Default email address to send alerts if a custom alert property is not" + Environment.NewLine +
+                "setup or populated for an individual task");
 
+            var proxy = QSReg.GetQmcServer();
 
-            string proxy = "";
-            // Int32 timeout = 60 * 1000;
-            string task = "";
-            // bool synchronous = true;
-
-            string email_server = "";
-            string email_port = "";
-            string email_user = "";
-            string email_pw = "";
-            string email_to = "";
-            string email_from = "";
-            string email_ssl = "N";
-            string qs_wait = "500";
-            string email_property = "";
-
-
-            proxy = QSReg.GetQmcServer();
-
-            email_server = QSReg.GetSmtpServer();
-            email_ssl = QSReg.GetSsl();
-            email_user = QSReg.GetUsername();
-            email_port = QSReg.GetPort();
-            email_pw = QSReg.GetPassword();
-            email_from = QSReg.GetEmailFrom();
-            email_to = QSReg.GetEmailTo();
-            email_property = QSReg.GetEmailPropertyName();
-            qs_wait = QSReg.GetWait();
-
-            string LogFile = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\QlikSenseEmailAdmin\\log.txt";
-
+            var emailServer = QSReg.GetSmtpServer();
+            var emailSsl = QSReg.GetSsl();
+            var emailUser = QSReg.GetUsername();
+            var emailPort = QSReg.GetPort();
+            var emailPw = QSReg.GetPassword();
+            var emailFrom = QSReg.GetEmailFrom();
+            var emailTo = QSReg.GetEmailTo();
+            var emailProperty = QSReg.GetEmailPropertyName();
+            var qsWait = QSReg.GetWait();
 
             tb_qsurl.Text = proxy;
-            tb_server.Text = email_server;
-            if(email_ssl == "Y")
-                { cb_ssl.Checked = true; }
-            else
-                { cb_ssl.Checked = false; };
-            tb_username.Text = email_user;
-            tb_port.Text = email_port;
-            tb_pasword.Text = email_pw;
-            tb_emailfrom.Text = email_from;
-            tb_emailto.Text = email_to;
-            tb_wait.Text = qs_wait;
-            tb_CustomProperty.Text = email_property;
-
-
-            string[] logdata = { };
-            if (File.Exists(LogFile))
-            {
-                logdata = File.ReadAllLines(LogFile);
-            }
-
-
-
-    
+            tb_server.Text = emailServer;
+            cb_ssl.Checked = emailSsl == "Y";
+            tb_username.Text = emailUser;
+            tb_port.Text = emailPort;
+            tb_pasword.Text = emailPw;
+            tb_emailfrom.Text = emailFrom;
+            tb_emailto.Text = emailTo;
+            tb_wait.Text = qsWait;
+            tb_CustomProperty.Text = emailProperty;
 
         }
 
         private void button_testurl_Click(object sender, EventArgs e)
         {
-
             try
             {
-                Logger logger = new Logger();
-                logger.Start(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\QlikSenseEmailAdmin\\history");
+                var logger = new Logger();
+                logger.Start(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
+                             "\\QlikSenseEmailAdmin\\history");
                 logger.SetLogLevel(LogLevel.Debug);
 
-
-
-                //QlikSenseJSONHelper qs = new QlikSenseJSONHelper(tb_qsurl.Text.Trim(), 60000, logger);
-                QlikSenseJSONHelper qs = new QlikSenseJSONHelper(tb_qsurl.Text.Trim(), Convert.ToInt32(tb_wait.Text)); //http timeout 60 seconds
-                                                                                                                               //SMTPMail mail = new SMTPMail();
-                                                                                                                               //TODO: - set mail params SMTPServerHost, and SMTPServerPort, AdminEmailAddress, FromEmailAddress,EnvironmentName there will probably be a couple more
+                var qs = new QlikSenseJSONHelper(tb_qsurl.Text.Trim(), Convert.ToInt32(tb_wait.Text));
 
                 logger.Log(LogLevel.Information, "Looking for Failed Tasks...");
-                //TaskStatus
 
-                List<QlikSenseTaskResult> TaskList = (List<QlikSenseTaskResult>)qs.GetTaskByStatus(QsTaskStatus.Failed);
 
-                if (TaskList.Count >= 0)
-                {
-                    MessageBox.Show("QMC Connetion Success!");
-                }
+                var taskList = qs.GetTaskByStatus(QsTaskStatus.Failed);
+
+                if (taskList.Count > 0) MessageBox.Show("QMC Connetion Success!");
             }
             catch (Exception)
             {
-
                 MessageBox.Show("QMC Connetion Failure! Check URL or the currrent user credentials");
             }
- 
-
-
-
-
         }
 
         private void button_email_Click(object sender, EventArgs e)
         {
-
             try
             {
-               Boolean Emailresult =  SendTestEmail();
+                var Emailresult = SendTestEmail();
 
                 MessageBox.Show("Test Email sent successfully!");
-
             }
-            
+
             catch (Exception Err)
             {
-
-                MessageBox.Show("Email Failed : " + Err.Message + " Details: " + Err.InnerException );
+                MessageBox.Show("Email Failed : " + Err.Message + " Details: " + Err.InnerException);
             }
-
-
-
-
-
         }
 
-        private Boolean SendTestEmail()
+        private bool SendTestEmail()
         {
-            //try
-            //{
+            var message = new MailMessage();
 
-                MailMessage message = new MailMessage();
+            message.To.Add(tb_emailto.Text.Trim());
+            message.Subject = "Qliksense Email Alert: TEST !! ";
 
+            message.From = new MailAddress(tb_emailfrom.Text);
+            message.IsBodyHtml = false;
+            message.Body = "This is a test email form QlikSense Task Alert tool.";
 
+            var smtp = new SmtpClient(tb_server.Text, Convert.ToInt32(tb_port.Text))
+            {
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(tb_username.Text.Trim(), tb_pasword.Text.Trim()),
+                EnableSsl = cb_ssl.Checked
+            };
 
-                message.To.Add(tb_emailto.Text.Trim());
-                message.Subject = "Qliksense Email Alert: TEST !! ";
+            smtp.Send(message);
 
-                message.From = new System.Net.Mail.MailAddress(tb_emailfrom.Text);
-                message.IsBodyHtml = false;
-                message.Body = "This is a test email form QlikSense Task Alert tool.";
-
-                SmtpClient smtp = new SmtpClient(tb_server.Text, Convert.ToInt32(tb_port.Text));
-
-                smtp.UseDefaultCredentials = false;
-
-                smtp.Credentials = new System.Net.NetworkCredential(tb_username.Text.Trim(), tb_pasword.Text.Trim());
-
-                smtp.EnableSsl = cb_ssl.Checked;
-
-
-                smtp.Send(message);
-                return true;
-      
+            return true;
         }
 
         private void SetScheduler_Click(object sender, EventArgs e)
         {
-            string Exepath = Assembly.GetExecutingAssembly().Location;
+            var exePath = Assembly.GetExecutingAssembly().Location;
 
 
             // Get the service on the local machine
-            using (TaskService ts = new TaskService())
+            using (var ts = new TaskService())
             {
-
-                
                 // Create a new task definition and assign properties
 
-                TaskDefinition td = ts.NewTask();
-                
+                var td = ts.NewTask();
+
                 td.RegistrationInfo.Description = "Checks Qliksense Task Failures";
-                //td.Settings.RunOnlyIfLoggedOn = false;
+                
                 // Add a trigger that will fire the task at this time every other day
-                DailyTrigger dt = (DailyTrigger)td.Triggers.Add(new DailyTrigger(1));
+                var dt = td.Triggers.Add(new DailyTrigger());
                 td.Settings.StartWhenAvailable = true;
                 dt.Repetition.Duration = TimeSpan.FromDays(1);
                 dt.Repetition.Interval = TimeSpan.FromMinutes(Convert.ToInt32(tb_interval.Text));
 
-            
 
                 // Create an action that will launch app with -a parameter
-                td.Actions.Add(new ExecAction(Exepath, "-a", null));
+                td.Actions.Add(new ExecAction(exePath, "-a"));
 
                 // Register the task in the root folder
                 try
                 {
-                    ts.RootFolder.RegisterTaskDefinition(@"QlikSense Email Alert - (Auto)", td, TaskCreation.CreateOrUpdate, tb_taskuser.Text.Trim(), tb_taskpassword.Text.Trim(), TaskLogonType.Password);
-                    MessageBox.Show("Following windows scheduler task is created/updated successfully: \r\n  QlikSense Email Alert - (Auto) ");
+                    ts.RootFolder.RegisterTaskDefinition(@"QlikSense Email Alert - (Auto)", td,
+                        TaskCreation.CreateOrUpdate, tb_taskuser.Text.Trim(), tb_taskpassword.Text.Trim(),
+                        TaskLogonType.Password);
+                    MessageBox.Show(
+                        "Following windows scheduler task is created/updated successfully: \r\n  QlikSense Email Alert - (Auto) ");
                 }
                 catch (Exception Err)
                 {
-                    MessageBox.Show("Failed to create the following task: QlikSense Email Alert - (Auto) \r\n" + Err.Message );
+                    MessageBox.Show("Failed to create the following task: QlikSense Email Alert - (Auto) \r\n" +
+                                    Err.Message);
                 }
-               
-              
             }
         }
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-
-            using (TaskService ts = new TaskService())
+            using (var ts = new TaskService())
             {
                 ts.RootFolder.DeleteTask("QlikSense Email Alert - (Auto)");
                 MessageBox.Show("QlikSense Email Alert - (Auto) Scheduler task is deleted successfully!");
@@ -274,11 +210,12 @@ namespace QlikSenseEmailAdmin
 
         private void ResetSendHistory_Click(object sender, EventArgs e)
         {
-            string LogFile = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\QlikSenseEmailAdmin\\log.txt";
+            var LogFile = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
+                          "\\QlikSenseEmailAdmin\\log.txt";
 
 
             try
-            { 
+            {
                 File.Delete(LogFile);
                 File.Create(LogFile).Close();
                 MessageBox.Show("Sent history file keeping the 24 hour notification delay per task is cleared!");
@@ -287,38 +224,32 @@ namespace QlikSenseEmailAdmin
 
             catch (Exception ex)
             {
-                
                 MessageBox.Show(ex.ToString());
             }
-    
-
-
-
-}
+        }
 
         private void ViewSendHistory_Click(object sender, EventArgs e)
         {
-            string LogFile = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\QlikSenseEmailAdmin\\log.txt";
+            var LogFile = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
+                          "\\QlikSenseEmailAdmin\\log.txt";
 
 
             try
             {
-
-                System.Diagnostics.Process.Start("notepad.exe", LogFile);
+                Process.Start("notepad.exe", LogFile);
             }
 
 
             catch (Exception ex)
             {
-
                 MessageBox.Show(ex.ToString());
             }
-
         }
 
         private void ViewLog_Click(object sender, EventArgs e)
         {
-            string LogFile = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\QlikSenseEmailAdmin\\history";
+            var LogFile = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
+                          "\\QlikSenseEmailAdmin\\history";
             Process.Start(LogFile);
         }
 
@@ -326,16 +257,31 @@ namespace QlikSenseEmailAdmin
         {
             QRSNTLMWebClient qrsClient;
             qrsClient = new QRSNTLMWebClient("https://usrem-nak002.qliktech.com", 60000);
-            QlikSenseAlertRegistry QSReg = new QlikSenseAlertRegistry();
-            Logger logger = new Logger();
-            logger.Start(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\QlikSenseEmailAdmin\\history");
+            var QSReg = new QlikSenseAlertRegistry();
+            var logger = new Logger();
+            logger.Start(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
+                         "\\QlikSenseEmailAdmin\\history");
             logger.SetLogLevel(LogLevel.Debug);
-            QlikSenseJSONHelper qs = new QlikSenseJSONHelper(QSReg.GetQmcServer(), 60000);
-            List<QlikSenseUserList> UserList = (List<QlikSenseUserList>)qs.GetDeletedUserList(QsTaskStatus.Failed);
-            qrsClient.Delete("/qrs/User/" + UserList[0].id.ToString());
-            
+            var qs = new QlikSenseJSONHelper(QSReg.GetQmcServer(), 60000);
+            var UserList = qs.GetDeletedUserList(QsTaskStatus.Failed);
+            qrsClient.Delete("/qrs/User/" + UserList[0].id);
         }
 
-        
+        private enum TaskStatus
+        {
+            NeverStarted,
+            Triggered,
+            Started,
+            Queued,
+            AbortInitiated,
+            Aborting,
+            Aborted,
+            Success,
+            Failed,
+            Skipped,
+            Retrying,
+            Error,
+            Reset
+        }
     }
 }

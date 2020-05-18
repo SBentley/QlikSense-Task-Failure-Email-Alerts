@@ -1,45 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
-using QlikSenseJSONObjects;
-using MyLogger;
-using System.Net.Mail;
+using System.Linq;
 using System.Net;
-using System.Reflection;
-using System.Windows.Forms;
-using Newtonsoft.Json;
+using System.Net.Mail;
 using System.Net.Mime;
+using System.Text;
+using System.Threading;
+using System.Windows.Forms;
+using MyLogger;
+using Newtonsoft.Json;
+using QlikSenseJSONObjects;
 
 namespace QlikSenseEmailAdmin
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var qsReg = new QlikSenseAlertRegistry();
-            
+
             //usage****
             //-proxy:https://usral-msi  -timeout:10000 -task:"test123" -wait
             //***
             // Use at your own risk.  Created by Marcus Spitzmiller and Nick Akincilar.
             Console.WriteLine();
 
-            var exePath = Assembly.GetExecutingAssembly().Location;
-
-            exePath.Replace("\\QlikSenseEmailAdmin.exe", "");
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
             var logger = new Logger();
-            logger.Start(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\QlikSenseEmailAdmin\\history");
+            logger.Start(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
+                         "\\QlikSenseEmailAdmin\\history");
             logger.SetLogLevel(LogLevel.Debug);
 
             /*****************************/
             // This section is where we gather inputs from the command line and config.txt
             /*****************************/
-
-            //TODO: - add SMTPServerHost, and SMTPServerPort, AdminEmailAddress, FromEmailAddress, EnvironmentName there will probably be a couple more
-
 
             //defaults
             var proxy = "";
@@ -57,8 +53,10 @@ namespace QlikSenseEmailAdmin
             // Delete log files older than 2 days
             DeleteOldLogFiles();
 
-            var configFile = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\QlikSenseEmailAdmin\\config.txt";
-            var logFile = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\QlikSenseEmailAdmin\\log.txt";
+            var configFile = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
+                             "\\QlikSenseEmailAdmin\\config.txt";
+            var logFile = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
+                          "\\QlikSenseEmailAdmin\\log.txt";
 
             //global settings from config.txt
             if (File.Exists(configFile))
@@ -68,7 +66,7 @@ namespace QlikSenseEmailAdmin
 
             if (File.Exists(logFile))
             {
-               var logLines =  File.ReadAllLines(logFile);
+                var logLines = File.ReadAllLines(logFile);
             }
 
             if (args.Length == 0)
@@ -77,9 +75,8 @@ namespace QlikSenseEmailAdmin
             }
             else
             {
-                if (!args[0].Contains(":"))   //Get config values from registry unless there is a parameter with ":" in it
+                if (!args[0].Contains(":")) //Get config values from registry unless there is a parameter with ":" in it
                 {
-
                     proxy = qsReg.GetQmcServer();
 
                     emailServer = qsReg.GetSmtpServer();
@@ -95,11 +92,10 @@ namespace QlikSenseEmailAdmin
                     goto bypass;
                 }
 
-           
-                var allArgs = new string[args.Length];
-         
-                args.CopyTo(allArgs, args.Length-1);
 
+                var allArgs = new string[args.Length];
+
+                args.CopyTo(allArgs, args.Length - 1);
 
 
                 foreach (var arg in allArgs)
@@ -111,7 +107,8 @@ namespace QlikSenseEmailAdmin
                         case "-?":
                         case "/?":
                             Console.WriteLine("Usage:");
-                            Console.WriteLine("-proxy:<URL address of proxy>  required example https://server.company.com");
+                            Console.WriteLine(
+                                "-proxy:<URL address of proxy>  required example https://server.company.com");
                             Console.WriteLine("   omit -wait to return immediately");
                             Console.WriteLine("   use -wait to wait for the task to finish");
                             Console.WriteLine("     Return Codes:");
@@ -127,7 +124,7 @@ namespace QlikSenseEmailAdmin
                             break;
                         case "-proxy":
                             proxy = "";
-                            for (int j = 1; j < param.Length; j++)
+                            for (var j = 1; j < param.Length; j++)
                             {
                                 proxy += param[j];
                                 if (j < param.Length - 1) proxy += ":"; //put back the colon
@@ -138,7 +135,7 @@ namespace QlikSenseEmailAdmin
                         case "-smtp_server":
                             emailServer = "";
 
-                            for (int j = 1; j < param.Length; j++)
+                            for (var j = 1; j < param.Length; j++)
                             {
                                 emailServer += param[j];
                                 if (j < param.Length - 1) emailServer += ":"; //put back the colon
@@ -148,11 +145,10 @@ namespace QlikSenseEmailAdmin
                             break;
 
 
-
                         case "-smtp_port":
                             emailPort = "";
 
-                            for (int j = 1; j < param.Length; j++)
+                            for (var j = 1; j < param.Length; j++)
                             {
                                 emailPort += param[j];
                                 if (j < param.Length - 1) emailPort += ":"; //put back the colon
@@ -164,7 +160,7 @@ namespace QlikSenseEmailAdmin
                         case "-stmp_user":
                             emailUser = "";
 
-                            for (int j = 1; j < param.Length; j++)
+                            for (var j = 1; j < param.Length; j++)
                             {
                                 emailUser += param[j];
                                 if (j < param.Length - 1) emailUser += ":"; //put back the colon
@@ -177,7 +173,7 @@ namespace QlikSenseEmailAdmin
                         case "-smtp_pw":
 
                             emailPw = "";
-                            for (int j = 1; j < param.Length; j++)
+                            for (var j = 1; j < param.Length; j++)
                             {
                                 emailPw += param[j];
                                 if (j < param.Length - 1) emailPw += ":"; //put back the colon
@@ -189,7 +185,7 @@ namespace QlikSenseEmailAdmin
                         case "-smtp_from":
 
                             emailFrom = "";
-                            for (int j = 1; j < param.Length; j++)
+                            for (var j = 1; j < param.Length; j++)
                             {
                                 emailFrom += param[j];
                                 if (j < param.Length - 1) emailFrom += ":"; //put back the colon
@@ -202,7 +198,7 @@ namespace QlikSenseEmailAdmin
                         case "-smtp_to":
 
                             emailTo = "";
-                            for (int j = 1; j < param.Length; j++)
+                            for (var j = 1; j < param.Length; j++)
                             {
                                 emailTo += param[j];
                                 if (j < param.Length - 1) emailTo += ":"; //put back the colon
@@ -215,7 +211,7 @@ namespace QlikSenseEmailAdmin
                         case "-smtp_enableSSL":
 
                             emailSsl = "";
-                            for (int j = 1; j < param.Length; j++)
+                            for (var j = 1; j < param.Length; j++)
                             {
                                 emailSsl += param[j];
                                 if (j < param.Length - 1) emailSsl += ":"; //put back the colon
@@ -227,13 +223,12 @@ namespace QlikSenseEmailAdmin
                             logger.Log(LogLevel.Information, "Unrecognized: " + param[0]);
 
                             break;
-
                     }
                 }
 
                 bypass:
                 logger.Log(LogLevel.Information, "Proxy: " + proxy);
-   
+
                 if (proxy == "")
                 {
                     logger.Log(LogLevel.Fatal, "Proxy or undefined");
@@ -245,7 +240,6 @@ namespace QlikSenseEmailAdmin
                 try
                 {
                     var qs = new QlikSenseJSONHelper(proxy, 60000); //http timeout 60 seconds
-                    //TODO: - set mail params SMTPServerHost, and SMTPServerPort, AdminEmailAddress, FromEmailAddress,EnvironmentName there will probably be a couple more
 
                     logger.Log(LogLevel.Information, "Looking for Failed Tasks...");
                     //TaskStatus
@@ -296,16 +290,14 @@ namespace QlikSenseEmailAdmin
                         var errorMessage = "";
                         errorMessage = taskList[i].operational.lastExecutionResult.details.Any()
                             ? taskList[i].operational.lastExecutionResult.details.Aggregate("",
-                                (current, tempmsg) => current + (tempmsg.message + "<br>"))
+                                (current, tempmsg) => current + tempmsg.message + "<br>")
                             : "N/A";
 
 
                         var emailToList = "";
                         var fileData = "";
                         if (fileRefId != "00000000-0000-0000-0000-000000000000")
-                        {
                             fileData = qs.GetTaskFile(curTaskId, fileRefId);
-                        }
 
                         //****** CHECK FOR CUSTOM PROPERTY VALUE(S) THAT CONTAIN EMAIL ADDRESSES
 
@@ -315,52 +307,38 @@ namespace QlikSenseEmailAdmin
                             for (customProp = 0;
                                 customProp <= myTaskResult[i].customProperties.Count - 1;
                                 customProp++)
-                            {
                                 if (myTaskResult[i].customProperties[customProp].definition.name ==
                                     emailPropertyName)
                                 {
                                     if (emailToList.Length > 0)
-                                    {
                                         emailToList += "," + myTaskResult[i].customProperties[customProp].value;
-                                    }
                                     else
-                                    {
                                         emailToList = myTaskResult[i].customProperties[customProp].value;
-                                    }
                                 }
-
-
-                            }
                         }
 
                         //****** ASSIGN DEFAULT EMAIL ADDRESS IF NO CUSTOM VALUES ARE FOUND!
-                        if (emailToList.Length == 0)
-                        {
-                            emailToList = emailTo;
-                        }
+                        if (emailToList.Length == 0) emailToList = emailTo;
 
-                    //TODO: 
-                    //    1. OPEN LOG FILE
-                    //    2. SEARCH FOR TASKID IN LOG FILE TO DETERMINE IF AN EMAIL WAS SENT PREVIOUSLY FOR THIS TASK
-                    //    3. IF AN ID IS FOUND IN FILE, 
-                    //               GET DATETIME STAMP
-                    //               COMPARE THIS DATE TO CURRENT DATE
-                    //                    IF MORE THAN 24 HOURS 
-                    //                         TRIGGER AN EMAIL PROCESS
-                    //                         IF EMAIL SUCCESSFUL, WRITE THIS EVENT TO LOG FILE
-                    //    4. IF NO ID THEN TRIGGER AN EMAIL
-                    //    5. IF EMAIL SUCCESSFUL, WRITE THIS EVENT TO LOG FILE
+                        //TODO: 
+                        //    1. OPEN LOG FILE
+                        //    2. SEARCH FOR TASKID IN LOG FILE TO DETERMINE IF AN EMAIL WAS SENT PREVIOUSLY FOR THIS TASK
+                        //    3. IF AN ID IS FOUND IN FILE, 
+                        //               GET DATETIME STAMP
+                        //               COMPARE THIS DATE TO CURRENT DATE
+                        //                    IF MORE THAN 24 HOURS 
+                        //                         TRIGGER AN EMAIL PROCESS
+                        //                         IF EMAIL SUCCESSFUL, WRITE THIS EVENT TO LOG FILE
+                        //    4. IF NO ID THEN TRIGGER AN EMAIL
+                        //    5. IF EMAIL SUCCESSFUL, WRITE THIS EVENT TO LOG FILE
 
 
-
-
-                    // <---------  1. START OPEN LOG FILE & READ EACH LINE
-                    // Read the file and display it line by line.
+                        // <---------  1. START OPEN LOG FILE & READ EACH LINE
+                        // Read the file and display it line by line.
                         var file = new StreamReader(logFile);
                         string line;
                         while ((line = file.ReadLine()) != null)
                         {
-
                             var logParams = line.Split('~');
                             var fileTaskId = logParams[0];
                             var fileLastEmailDate = Convert.ToDateTime(logParams[2]);
@@ -368,13 +346,13 @@ namespace QlikSenseEmailAdmin
 
                             //<---------2.SEARCH FOR TASKID IN LOG FILE TO DETERMINE
 
-                            if (fileTaskId == curTaskId)   //IF EXISTING EMAIL IS FOUND CHECK LAST SENT DATE
+                            if (fileTaskId == curTaskId) //IF EXISTING EMAIL IS FOUND CHECK LAST SENT DATE
                             {
                                 var emailStatus = false;
                                 existingTask = true;
-                                if (fileLastEmailDate.AddHours(24) < DateTime.Now) // Send email if last email is sent more than 24 hours ago.
+                                if (fileLastEmailDate.AddHours(24) < DateTime.Now
+                                ) // Send email if last email is sent more than 24 hours ago.
                                 {
-
                                     alertCount = +1;
                                     logger.Log(LogLevel.Information, "Sending Email For " + curTaskName + " ....");
                                     SendEmail(curTaskName, Convert.ToString(taskDate), emailFrom, emailUser, emailPw,
@@ -385,21 +363,23 @@ namespace QlikSenseEmailAdmin
                                 }
 
 
-                                if (emailStatus)   //IF AN EMAIL HAS JUST BEEN SENT THEN MODIFY LOG FILE WITH NEW CURRENT DATE
+                                if (emailStatus
+                                ) //IF AN EMAIL HAS JUST BEEN SENT THEN MODIFY LOG FILE WITH NEW CURRENT DATE
                                 {
                                     logParams[2] = Convert.ToString(DateTime.Now);
                                     line = string.Join("~", logParams);
-
                                 }
                             }
+
                             fileContent += line + "\r\n";
                         }
 
                         file.Close();
 
-                        if (existingTask == false)
+                        if (!existingTask)
                         {
-                            fileContent = fileContent + curTaskId + "~" + curTaskName + "~" + Convert.ToString(DateTime.Now) + "\r\n";
+                            fileContent = fileContent + curTaskId + "~" + curTaskName + "~" +
+                                          Convert.ToString(DateTime.Now) + "\r\n";
                             logger.Log(LogLevel.Information, "Sending Email" + curTaskName + " ....");
                             SendEmail(curTaskName, Convert.ToString(taskDate), emailFrom, emailUser, emailPw,
                                 emailToList, emailServer, Convert.ToInt32(emailPort), emailSsl, fileData, errorMessage);
@@ -408,28 +388,21 @@ namespace QlikSenseEmailAdmin
                         }
 
 
-                        if (alertCount > 0)
-                        {
-                            File.WriteAllText(logFile, fileContent);
-                        }
+                        if (alertCount > 0) File.WriteAllText(logFile, fileContent);
                         file.Close();
                     }
                 }
                 catch (Exception e)
                 {
-                    logger.Log(LogLevel.Error, e.ToString() +  "\r\n" + jsonData );
+                    logger.Log(LogLevel.Error, e + "\r\n" + jsonData);
 
                     if (e.ToString() == "Timeout: The operation has timed out")
-                    {
                         retval = 4;
-                    }
                     else
-                    {
                         retval = 8;
-                    }
                 }
 
-                logger.Log( LogLevel.Information, "Returning Errorlevel " + retval.ToString() );
+                logger.Log(LogLevel.Information, "Returning Errorlevel " + retval);
 
                 logger.End();
                 Environment.Exit(retval);
@@ -441,15 +414,12 @@ namespace QlikSenseEmailAdmin
             var files = new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
                                           "\\QlikSenseEmailAdmin\\history").GetFiles("*.log");
             foreach (var file in files)
-            {
                 if (DateTime.UtcNow - file.CreationTimeUtc > TimeSpan.FromDays(2))
-                {
                     File.Delete(file.FullName);
-                }
-            }
         }
 
-        private static void SendEmail(string TaskName, string TaskDate, string SendFrom, string UserID, string Password, string SendTo, string SMTPServer, Int32 SmtpPort, string EnableSsl, string FileData, string ErrorMsg)
+        private static void SendEmail(string TaskName, string TaskDate, string SendFrom, string UserID, string Password,
+            string SendTo, string SMTPServer, int SmtpPort, string EnableSsl, string FileData, string ErrorMsg)
         {
             var message = new MailMessage();
 
@@ -458,15 +428,15 @@ namespace QlikSenseEmailAdmin
             var stream = new MemoryStream(byteArray);
 
             // Create  the file attachment for this email message.
-            var data = new Attachment(stream,  TaskName + "_" + TaskDate + "_Log.txt" , MediaTypeNames.Text.Plain );
+            var data = new Attachment(stream, TaskName + "_" + TaskDate + "_Log.txt", MediaTypeNames.Text.Plain);
 
             // Add time stamp information for the file.
             // Add the file attachment to this email message.
             message.Attachments.Add(data);
             message.To.Add(SendTo);
             message.Subject = "Qliksense Task Failure: " + TaskName;
-            
-            message.From = new System.Net.Mail.MailAddress(SendFrom);
+
+            message.From = new MailAddress(SendFrom);
             message.IsBodyHtml = true;
             message.Body =
                 "<h1 style=\"font-family:Arial;color: #04B431;\" >Automated QlikSense Task Failure Alert!</h1> <div style=\"font-family:Arial;\">  Following QlikSense task has failed to run:<br> <br> Task Name = <strong>"
@@ -483,9 +453,7 @@ namespace QlikSenseEmailAdmin
 
             smtp.Send(message);
 
-            System.Threading.Thread.Sleep(3000);
-
+            Thread.Sleep(3000);
         }
     }
 }
-

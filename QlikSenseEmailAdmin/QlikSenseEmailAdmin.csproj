@@ -135,7 +135,9 @@
   <ItemGroup>
     <None Include="ClassDiagram2.cd" />
     <None Include="packages.config" />
-    <None Include="Settings\config.txt" />
+    <None Include="Settings\config.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Settings\log.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
