@@ -1,3 +1,5 @@
+# A fork of the original using TLS 1.2
+--------------------------------------
 
 QlikSense Automated Task Failure Email Alerts
 =============================================

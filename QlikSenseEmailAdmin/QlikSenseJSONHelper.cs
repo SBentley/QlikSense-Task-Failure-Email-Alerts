@@ -26,16 +26,12 @@ namespace QlikSenseEmailAdmin
             appqueries.Add("filter", "name eq '" + appname + "'");
 
             //find the app
-            string appid = "";
-            string appsstring = _qrsClient.Get("/qrs/app", appqueries);
-            List<QlikSenseApp> apps = (List<QlikSenseApp>)JsonConvert.DeserializeObject<List<QlikSenseApp>>(appsstring);
-            for (int i = 0; i < apps.Count; i++)
+            var appid = "";
+            var appString = _qrsClient.Get("/qrs/app", appqueries);
+            var apps = JsonConvert.DeserializeObject<List<QlikSenseApp>>(appString);
+            foreach (var app in apps.Where(app => app.name == appname))
             {
-                if (apps[i].name == appname)
-                {
-                    appid = apps[i].id;
-                    
-                }
+                appid = app.id;
             }
 
             if (appid == "")
@@ -47,7 +43,7 @@ namespace QlikSenseEmailAdmin
 
         public int GetTaskStatusByName(string taskname)
         {
-            Dictionary<string, string> queries = new Dictionary<string, string>();
+            var queries = new Dictionary<string, string>();
             queries.Add("filter", "name eq '" + taskname + "'");
 
             //find the app
