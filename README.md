@@ -13,3 +13,6 @@ The binary can be found under the releases section. [Latest release](https://git
  * _Slightly_ increased code quality
  * Put code into a git friendly structure (not zip files)
  * Bumped framework version to .NET Framework 4.7
+
+### Building the project
+ In order to bulid the installer project using Visual Studio 2019 or later you will need to install the [Visual Studio Installer Project Extension](https://marketplace.visualstudio.com/items?itemName=VisualStudioClient.MicrosoftVisualStudio2017InstallerProjects)
