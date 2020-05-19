@@ -10,6 +10,6 @@ The binary can be found under the releases section. [Latest release](https://git
  Other changes
  * Test connection button on config window now shows how many failed and successful tasks it found. It no longer succeeds silently if no failed tasks were found but successful ones were.
  * New button on config window to test email and API at the same time. This will hopefully give you more confidence that everything is set up right
- * _slightly_ increased code quality
+ * _Slightly_ increased code quality
  * Put code into a git friendly structure (not zip files)
  * Bumped framework version to .NET Framework 4.7
