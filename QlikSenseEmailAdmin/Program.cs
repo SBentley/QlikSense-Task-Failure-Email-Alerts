@@ -25,8 +25,10 @@ namespace QlikSenseEmailAdmin
             //***
             // Use at your own risk.  Created by Marcus Spitzmiller and Nick Akincilar.
             Console.WriteLine();
+
             // After looking at the code, definitely use at your own risk -- SBentley
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            // Let the system decide which protocol to use. This includes TLS 1.2
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.SystemDefault;
 
             var logger = new Logger();
             logger.Start(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +

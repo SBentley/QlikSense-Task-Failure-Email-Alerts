@@ -74,7 +74,6 @@
             this.ViewLog = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.ApiEmailButton = new System.Windows.Forms.Button();
-            this.label17 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBox1)).BeginInit();
@@ -534,22 +533,11 @@
             this.ApiEmailButton.UseVisualStyleBackColor = true;
             this.ApiEmailButton.Click += new System.EventHandler(this.ApiEmailButton_Click);
             // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.ForeColor = System.Drawing.Color.OrangeRed;
-            this.label17.Location = new System.Drawing.Point(370, 7);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(45, 13);
-            this.label17.TabIndex = 30;
-            this.label17.Text = "TLS 1.2";
-            // 
             // frmConfig
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(552, 717);
-            this.Controls.Add(this.label17);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.ViewLog);
             this.Controls.Add(this.ViewSendHistory);
@@ -630,7 +618,6 @@
         private System.Windows.Forms.Button ViewLog;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button DeleteUsers;
-        private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Button ApiEmailButton;
     }
 }
