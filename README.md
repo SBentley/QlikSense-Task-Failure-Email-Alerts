@@ -1,10 +1,10 @@
 # A fork of the original using the system default security protocol (compatible with TLS 1.2)
 ---------------------------------------------------------------------------------------------
 
-## Installation
+### Installation
 The binary can be found under the releases section. [Latest release](https://github.com/SBentley/QlikSense-Task-Failure-Email-Alerts/releases/tag/v1.0.0)
 
-
+## Changes
  A small tweak on the [original](https://github.com/NickAkincilar/QlikSense-Task-Failure-Email-Alerts) to use the default system security protocol, this ensures it can communicate with Qlik using TlS 1.2 and future versions.
 
  Other changes
