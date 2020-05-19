@@ -23,7 +23,6 @@ namespace QVnextDemoBuilder
             _queryStringCollection = new NameValueCollection { { "xrfkey", "ABCDEFG123456789" } };
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
             _serverUrl = QRSserverURL;
-            ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
 
             //do a simple first GET to set cookies for subsequent actions (otherwise POST commands wont work)
             try
