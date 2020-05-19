@@ -110,9 +110,14 @@ namespace QlikSenseEmailAdmin
                 logger.Log(LogLevel.Information, "Looking for Failed Tasks...");
 
                 var qs = new QlikSenseJSONHelper(tb_qsurl.Text.Trim(), Convert.ToInt32(tb_wait.Text));
-                var taskList = qs.GetTaskByStatus(QsTaskStatus.Failed);
+                var failedTasks = qs.GetTaskByStatus(QsTaskStatus.Failed);
+                var successTasks = qs.GetTaskByStatus(QsTaskStatus.Success);
 
-                if (taskList.Count > 0) MessageBox.Show("QMC Connetion Success!");
+                if (failedTasks.Count + successTasks.Count > 0)
+                {
+                    MessageBox.Show(
+                        $"QMC Connetion Success! Found {failedTasks.Count} failed tasks and {successTasks.Count} successful tasks");
+                }
             }
             catch (Exception)
             {
