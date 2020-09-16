@@ -73,6 +73,8 @@
             this.ViewSendHistory = new System.Windows.Forms.Button();
             this.ViewLog = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.useAddressLabel = new System.Windows.Forms.Label();
+            this.useAddressCheckBox = new System.Windows.Forms.CheckBox();
             this.ApiEmailButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -207,7 +209,7 @@
             // 
             // tb_emailto
             // 
-            this.tb_emailto.Location = new System.Drawing.Point(113, 103);
+            this.tb_emailto.Location = new System.Drawing.Point(113, 89);
             this.tb_emailto.Name = "tb_emailto";
             this.tb_emailto.Size = new System.Drawing.Size(146, 20);
             this.tb_emailto.TabIndex = 17;
@@ -215,7 +217,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(34, 106);
+            this.label8.Location = new System.Drawing.Point(34, 92);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(64, 13);
             this.label8.TabIndex = 16;
@@ -254,7 +256,7 @@
             // 
             // tb_CustomProperty
             // 
-            this.tb_CustomProperty.Location = new System.Drawing.Point(113, 51);
+            this.tb_CustomProperty.Location = new System.Drawing.Point(113, 37);
             this.tb_CustomProperty.Name = "tb_CustomProperty";
             this.tb_CustomProperty.Size = new System.Drawing.Size(117, 20);
             this.tb_CustomProperty.TabIndex = 21;
@@ -263,7 +265,7 @@
             // label14
             // 
             this.label14.ForeColor = System.Drawing.Color.Green;
-            this.label14.Location = new System.Drawing.Point(27, 22);
+            this.label14.Location = new System.Drawing.Point(27, 16);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(462, 26);
             this.label14.TabIndex = 20;
@@ -272,9 +274,9 @@
             // 
             // button_email
             // 
-            this.button_email.Location = new System.Drawing.Point(295, 96);
+            this.button_email.Location = new System.Drawing.Point(344, 82);
             this.button_email.Name = "button_email";
-            this.button_email.Size = new System.Drawing.Size(101, 40);
+            this.button_email.Size = new System.Drawing.Size(72, 40);
             this.button_email.TabIndex = 19;
             this.button_email.Text = "Test Email";
             this.button_email.UseVisualStyleBackColor = true;
@@ -299,7 +301,7 @@
             // 
             // SetScheduler
             // 
-            this.SetScheduler.Location = new System.Drawing.Point(324, 103);
+            this.SetScheduler.Location = new System.Drawing.Point(324, 104);
             this.SetScheduler.Name = "SetScheduler";
             this.SetScheduler.Size = new System.Drawing.Size(161, 31);
             this.SetScheduler.TabIndex = 19;
@@ -318,9 +320,9 @@
             this.groupBox2.Controls.Add(this.tb_taskuser);
             this.groupBox2.Controls.Add(this.label9);
             this.groupBox2.Controls.Add(this.SetScheduler);
-            this.groupBox2.Location = new System.Drawing.Point(19, 438);
+            this.groupBox2.Location = new System.Drawing.Point(19, 451);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(509, 155);
+            this.groupBox2.Size = new System.Drawing.Size(509, 142);
             this.groupBox2.TabIndex = 20;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = " Task Scheduler  ";
@@ -337,7 +339,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(232, 103);
+            this.button1.Location = new System.Drawing.Point(232, 104);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 31);
             this.button1.TabIndex = 26;
@@ -467,7 +469,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(27, 54);
+            this.label15.Location = new System.Drawing.Point(27, 40);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(80, 13);
             this.label15.TabIndex = 22;
@@ -477,7 +479,7 @@
             // label16
             // 
             this.label16.ForeColor = System.Drawing.Color.Green;
-            this.label16.Location = new System.Drawing.Point(27, 71);
+            this.label16.Location = new System.Drawing.Point(27, 57);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(478, 26);
             this.label16.TabIndex = 23;
@@ -507,6 +509,8 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.useAddressLabel);
+            this.groupBox3.Controls.Add(this.useAddressCheckBox);
             this.groupBox3.Controls.Add(this.ApiEmailButton);
             this.groupBox3.Controls.Add(this.label14);
             this.groupBox3.Controls.Add(this.label16);
@@ -517,17 +521,36 @@
             this.groupBox3.Controls.Add(this.button_email);
             this.groupBox3.Location = new System.Drawing.Point(19, 290);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(509, 142);
+            this.groupBox3.Size = new System.Drawing.Size(509, 155);
             this.groupBox3.TabIndex = 24;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Where to Send Alerts?";
             // 
+            // useAddressLabel
+            // 
+            this.useAddressLabel.AutoSize = true;
+            this.useAddressLabel.Location = new System.Drawing.Point(9, 122);
+            this.useAddressLabel.Name = "useAddressLabel";
+            this.useAddressLabel.Size = new System.Drawing.Size(100, 13);
+            this.useAddressLabel.TabIndex = 26;
+            this.useAddressLabel.Text = "Always use address";
+            this.useAddressLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // useAddressCheckBox
+            // 
+            this.useAddressCheckBox.AutoSize = true;
+            this.useAddressCheckBox.Location = new System.Drawing.Point(120, 124);
+            this.useAddressCheckBox.Name = "useAddressCheckBox";
+            this.useAddressCheckBox.Size = new System.Drawing.Size(15, 14);
+            this.useAddressCheckBox.TabIndex = 25;
+            this.useAddressCheckBox.UseVisualStyleBackColor = true;
+            // 
             // ApiEmailButton
             // 
             this.ApiEmailButton.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.ApiEmailButton.Location = new System.Drawing.Point(403, 96);
+            this.ApiEmailButton.Location = new System.Drawing.Point(437, 82);
             this.ApiEmailButton.Name = "ApiEmailButton";
-            this.ApiEmailButton.Size = new System.Drawing.Size(100, 40);
+            this.ApiEmailButton.Size = new System.Drawing.Size(66, 40);
             this.ApiEmailButton.TabIndex = 24;
             this.ApiEmailButton.Text = "Test Email and API";
             this.ApiEmailButton.UseVisualStyleBackColor = true;
@@ -619,5 +642,7 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button DeleteUsers;
         private System.Windows.Forms.Button ApiEmailButton;
+        private System.Windows.Forms.Label useAddressLabel;
+        private System.Windows.Forms.CheckBox useAddressCheckBox;
     }
 }

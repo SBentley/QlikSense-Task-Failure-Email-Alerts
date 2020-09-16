@@ -51,6 +51,7 @@ namespace QlikSenseEmailAdmin
             var emailFrom = "";
             var emailSsl = "N";
             var emailPropertyName = "";
+            var alwaysUseToAddress = "";
 
             // Delete log files older than 2 days
             DeleteOldLogFiles();
@@ -88,6 +89,7 @@ namespace QlikSenseEmailAdmin
                     emailPw = qsReg.GetPassword();
                     emailFrom = qsReg.GetEmailFrom();
                     emailTo = qsReg.GetEmailTo();
+                    alwaysUseToAddress = qsReg.GetAlwaysUseToAddress();
                     qsReg.GetWait();
                     emailPropertyName = qsReg.GetEmailPropertyName();
 
@@ -209,6 +211,18 @@ namespace QlikSenseEmailAdmin
 
                             break;
 
+                        case "-smtp_always_use_default":
+
+                            alwaysUseToAddress = "";
+                            for (var j = 1; j < param.Length; j++)
+                            {
+                                alwaysUseToAddress += param[j];
+                                if (j < param.Length - 1) alwaysUseToAddress += ":"; //put back the colon
+                            }
+
+
+                            break;
+
 
                         case "-smtp_enableSSL":
 
@@ -306,18 +320,26 @@ namespace QlikSenseEmailAdmin
                         if (myTaskResult[i] != null && myTaskResult[i].customProperties.Count > 0)
                         {
                             int customProp;
-                            for (customProp = 0;
-                                customProp <= myTaskResult[i].customProperties.Count - 1;
-                                customProp++)
-                                if (myTaskResult[i].customProperties[customProp].definition.name ==
-                                    emailPropertyName)
+                            for (customProp = 0; customProp <= myTaskResult[i].customProperties.Count - 1; customProp++)
+                            {
+                                if (myTaskResult[i].customProperties[customProp].definition.name == emailPropertyName)
                                 {
                                     if (emailToList.Length > 0)
                                         emailToList += "," + myTaskResult[i].customProperties[customProp].value;
                                     else
                                         emailToList = myTaskResult[i].customProperties[customProp].value;
                                 }
+                            }
+                            if (alwaysUseToAddress == "Y")
+                            {
+                                if (emailToList.Length > 0)
+                                {
+                                    emailToList += "," + emailTo;
+                                }
+                                else emailToList = emailTo;
+                            }
                         }
+
 
                         //****** ASSIGN DEFAULT EMAIL ADDRESS IF NO CUSTOM VALUES ARE FOUND!
                         if (emailToList.Length == 0) emailToList = emailTo;

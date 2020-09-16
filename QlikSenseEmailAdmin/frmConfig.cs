@@ -26,23 +26,15 @@ namespace QlikSenseEmailAdmin
         private void button1_Click(object sender, EventArgs e)
         {
             QSReg.SetQmcServer(tb_qsurl.Text.Trim());
-
             QSReg.SetSmptServer(tb_server.Text.Trim());
-
             QSReg.SetSsl(cb_ssl.Checked);
-
             QSReg.SetUsername(tb_username.Text.Trim());
-
             QSReg.SetPort(tb_port.Text.Trim());
-
             QSReg.SetPassword(tb_pasword.Text.Trim());
-
             QSReg.SetEmailFrom(tb_emailfrom.Text.Trim());
-
             QSReg.SetEmailTo(tb_emailto.Text.Trim());
-
+            QSReg.SetAlwaysUseToAddress(useAddressCheckBox.Checked);
             QSReg.SetWait(tb_wait.Text.Trim());
-
             QSReg.SetEmailPropertyName(tb_CustomProperty.Text.Trim());
 
             MessageBox.Show("Setting are saved successfully", "QlikSense Email Alert", MessageBoxButtons.OK);

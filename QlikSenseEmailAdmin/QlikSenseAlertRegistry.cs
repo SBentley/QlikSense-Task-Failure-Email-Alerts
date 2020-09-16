@@ -59,6 +59,12 @@ namespace QlikSenseEmailAdmin
             var var_temp = (string)Registry.GetValue(hklm, KeyName, "Return this default if NoSuchName does not exist.");
             return var_temp;
         }
+        public string GetAlwaysUseToAddress()
+        {
+            KeyName = "smtp_always_use_default";
+            var value = (string)Registry.GetValue(hklm, KeyName, "Return this default if NoSuchName does not exist.");
+            return value;
+        }
 
         public string GetPassword()
         {
@@ -125,6 +131,12 @@ namespace QlikSenseEmailAdmin
         {
             KeyName = "smtp_email_to";
             Registry.SetValue(hklm, KeyName, emailto);
+        }
+        public void SetAlwaysUseToAddress(bool isChecked)
+        {
+            KeyName = "smtp_always_use_default";
+            var regValue = isChecked ? "Y" : "N";
+            Registry.SetValue(hklm, KeyName, regValue);
         }
 
         public void SetPassword( string password)
