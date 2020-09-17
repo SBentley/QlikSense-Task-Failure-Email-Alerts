@@ -76,6 +76,7 @@
             this.useAddressLabel = new System.Windows.Forms.Label();
             this.useAddressCheckBox = new System.Windows.Forms.CheckBox();
             this.ApiEmailButton = new System.Windows.Forms.Button();
+            this.label17 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBox1)).BeginInit();
@@ -209,15 +210,15 @@
             // 
             // tb_emailto
             // 
-            this.tb_emailto.Location = new System.Drawing.Point(113, 89);
+            this.tb_emailto.Location = new System.Drawing.Point(113, 97);
             this.tb_emailto.Name = "tb_emailto";
-            this.tb_emailto.Size = new System.Drawing.Size(146, 20);
+            this.tb_emailto.Size = new System.Drawing.Size(354, 20);
             this.tb_emailto.TabIndex = 17;
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(34, 92);
+            this.label8.Location = new System.Drawing.Point(34, 100);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(64, 13);
             this.label8.TabIndex = 16;
@@ -265,18 +266,18 @@
             // label14
             // 
             this.label14.ForeColor = System.Drawing.Color.Green;
-            this.label14.Location = new System.Drawing.Point(27, 16);
+            this.label14.Location = new System.Drawing.Point(27, 15);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(462, 26);
+            this.label14.Size = new System.Drawing.Size(462, 21);
             this.label14.TabIndex = 20;
             this.label14.Text = "QMC Custom Property Name which contains email addresses for Notification ";
             this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // button_email
             // 
-            this.button_email.Location = new System.Drawing.Point(344, 82);
+            this.button_email.Location = new System.Drawing.Point(203, 144);
             this.button_email.Name = "button_email";
-            this.button_email.Size = new System.Drawing.Size(72, 40);
+            this.button_email.Size = new System.Drawing.Size(73, 29);
             this.button_email.TabIndex = 19;
             this.button_email.Text = "Test Email";
             this.button_email.UseVisualStyleBackColor = true;
@@ -301,7 +302,7 @@
             // 
             // SetScheduler
             // 
-            this.SetScheduler.Location = new System.Drawing.Point(324, 104);
+            this.SetScheduler.Location = new System.Drawing.Point(324, 78);
             this.SetScheduler.Name = "SetScheduler";
             this.SetScheduler.Size = new System.Drawing.Size(161, 31);
             this.SetScheduler.TabIndex = 19;
@@ -320,16 +321,16 @@
             this.groupBox2.Controls.Add(this.tb_taskuser);
             this.groupBox2.Controls.Add(this.label9);
             this.groupBox2.Controls.Add(this.SetScheduler);
-            this.groupBox2.Location = new System.Drawing.Point(19, 451);
+            this.groupBox2.Location = new System.Drawing.Point(19, 480);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(509, 142);
+            this.groupBox2.Size = new System.Drawing.Size(509, 121);
             this.groupBox2.TabIndex = 20;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = " Task Scheduler  ";
             // 
             // DeleteUsers
             // 
-            this.DeleteUsers.Location = new System.Drawing.Point(414, 29);
+            this.DeleteUsers.Location = new System.Drawing.Point(392, 19);
             this.DeleteUsers.Name = "DeleteUsers";
             this.DeleteUsers.Size = new System.Drawing.Size(75, 23);
             this.DeleteUsers.TabIndex = 30;
@@ -339,7 +340,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(232, 104);
+            this.button1.Location = new System.Drawing.Point(232, 78);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 31);
             this.button1.TabIndex = 26;
@@ -350,7 +351,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(35, 83);
+            this.label11.Location = new System.Drawing.Point(35, 76);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(91, 13);
             this.label11.TabIndex = 25;
@@ -359,7 +360,7 @@
             // 
             // tb_interval
             // 
-            this.tb_interval.Location = new System.Drawing.Point(132, 80);
+            this.tb_interval.Location = new System.Drawing.Point(132, 73);
             this.tb_interval.Name = "tb_interval";
             this.tb_interval.Size = new System.Drawing.Size(34, 20);
             this.tb_interval.TabIndex = 24;
@@ -368,7 +369,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(23, 57);
+            this.label10.Location = new System.Drawing.Point(23, 50);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(103, 13);
             this.label10.TabIndex = 23;
@@ -377,7 +378,7 @@
             // 
             // tb_taskpassword
             // 
-            this.tb_taskpassword.Location = new System.Drawing.Point(132, 54);
+            this.tb_taskpassword.Location = new System.Drawing.Point(132, 47);
             this.tb_taskpassword.Name = "tb_taskpassword";
             this.tb_taskpassword.Size = new System.Drawing.Size(215, 20);
             this.tb_taskpassword.TabIndex = 22;
@@ -385,7 +386,7 @@
             // 
             // tb_taskuser
             // 
-            this.tb_taskuser.Location = new System.Drawing.Point(132, 26);
+            this.tb_taskuser.Location = new System.Drawing.Point(132, 19);
             this.tb_taskuser.Name = "tb_taskuser";
             this.tb_taskuser.Size = new System.Drawing.Size(215, 20);
             this.tb_taskuser.TabIndex = 21;
@@ -394,7 +395,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(19, 29);
+            this.label9.Location = new System.Drawing.Point(19, 22);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(107, 13);
             this.label9.TabIndex = 20;
@@ -479,12 +480,12 @@
             // label16
             // 
             this.label16.ForeColor = System.Drawing.Color.Green;
-            this.label16.Location = new System.Drawing.Point(27, 57);
+            this.label16.Location = new System.Drawing.Point(27, 65);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(478, 26);
             this.label16.TabIndex = 23;
             this.label16.Text = "If a task is not associated with a custom property listed above then use the foll" +
-    "owing address";
+    "owing comma separated addresses";
             this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // ViewSendHistory
@@ -509,6 +510,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.label17);
             this.groupBox3.Controls.Add(this.useAddressLabel);
             this.groupBox3.Controls.Add(this.useAddressCheckBox);
             this.groupBox3.Controls.Add(this.ApiEmailButton);
@@ -521,7 +523,7 @@
             this.groupBox3.Controls.Add(this.button_email);
             this.groupBox3.Location = new System.Drawing.Point(19, 290);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(509, 155);
+            this.groupBox3.Size = new System.Drawing.Size(509, 184);
             this.groupBox3.TabIndex = 24;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Where to Send Alerts?";
@@ -529,7 +531,7 @@
             // useAddressLabel
             // 
             this.useAddressLabel.AutoSize = true;
-            this.useAddressLabel.Location = new System.Drawing.Point(9, 122);
+            this.useAddressLabel.Location = new System.Drawing.Point(9, 147);
             this.useAddressLabel.Name = "useAddressLabel";
             this.useAddressLabel.Size = new System.Drawing.Size(100, 13);
             this.useAddressLabel.TabIndex = 26;
@@ -539,7 +541,7 @@
             // useAddressCheckBox
             // 
             this.useAddressCheckBox.AutoSize = true;
-            this.useAddressCheckBox.Location = new System.Drawing.Point(120, 124);
+            this.useAddressCheckBox.Location = new System.Drawing.Point(119, 148);
             this.useAddressCheckBox.Name = "useAddressCheckBox";
             this.useAddressCheckBox.Size = new System.Drawing.Size(15, 14);
             this.useAddressCheckBox.TabIndex = 25;
@@ -548,13 +550,23 @@
             // ApiEmailButton
             // 
             this.ApiEmailButton.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.ApiEmailButton.Location = new System.Drawing.Point(437, 82);
+            this.ApiEmailButton.Location = new System.Drawing.Point(282, 144);
             this.ApiEmailButton.Name = "ApiEmailButton";
-            this.ApiEmailButton.Size = new System.Drawing.Size(66, 40);
+            this.ApiEmailButton.Size = new System.Drawing.Size(145, 29);
             this.ApiEmailButton.TabIndex = 24;
             this.ApiEmailButton.Text = "Test Email and API";
             this.ApiEmailButton.UseVisualStyleBackColor = true;
             this.ApiEmailButton.Click += new System.EventHandler(this.ApiEmailButton_Click);
+            // 
+            // label17
+            // 
+            this.label17.ForeColor = System.Drawing.Color.Green;
+            this.label17.Location = new System.Drawing.Point(27, 119);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(478, 26);
+            this.label17.TabIndex = 27;
+            this.label17.Text = "Use the above addresses even if custom properties exist";
+            this.label17.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // frmConfig
             // 
@@ -644,5 +656,6 @@
         private System.Windows.Forms.Button ApiEmailButton;
         private System.Windows.Forms.Label useAddressLabel;
         private System.Windows.Forms.CheckBox useAddressCheckBox;
+        private System.Windows.Forms.Label label17;
     }
 }
