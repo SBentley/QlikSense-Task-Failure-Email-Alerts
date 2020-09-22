@@ -16,10 +16,10 @@ namespace QlikSenseEmailAdmin
 {
     internal class Program
     {
+
         private static void Main(string[] args)
         {
             var qsReg = new QlikSenseAlertRegistry();
-
             //usage****
             //-proxy:https://usral-msi  -timeout:10000 -task:"test123" -wait
             //***
@@ -330,6 +330,7 @@ namespace QlikSenseEmailAdmin
                                         emailToList = myTaskResult[i].customProperties[customProp].value;
                                 }
                             }
+
                             if (alwaysUseToAddress == "Y")
                             {
                                 if (emailToList.Length > 0)
@@ -374,7 +375,8 @@ namespace QlikSenseEmailAdmin
                             {
                                 var emailStatus = false;
                                 existingTask = true;
-                                if (fileLastEmailDate.AddHours(24) < DateTime.Now) // Send email if last email is sent more than 24 hours ago.
+                                if (fileLastEmailDate.AddHours(24) < DateTime.Now
+                                ) // Send email if last email is sent more than 24 hours ago.
                                 {
                                     alertCount = +1;
                                     logger.Log(LogLevel.Information, "Sending Email For " + curTaskName + " ....");
@@ -448,7 +450,7 @@ namespace QlikSenseEmailAdmin
             if (smtpServer == null) throw new ArgumentNullException(nameof(smtpServer));
             if (fileData == null) throw new ArgumentNullException(nameof(fileData));
             var message = new MailMessage();
-
+            var hostname = Dns.GetHostName();
 
             var byteArray = Encoding.UTF8.GetBytes(fileData);
             var stream = new MemoryStream(byteArray);
@@ -460,14 +462,15 @@ namespace QlikSenseEmailAdmin
             // Add the file attachment to this email message.
             message.Attachments.Add(data);
             message.To.Add(sendTo);
-            message.Subject = "Qliksense Task Failure: " + taskName;
+            message.Subject = $"Qliksense Task Failure ({hostname}): {taskName}";
 
             message.From = new MailAddress(sendFrom);
             message.IsBodyHtml = true;
             message.Body =
-                "<h1 style=\"font-family:Arial;color: #04B431;\" >Automated QlikSense Task Failure Alert!</h1> <div style=\"font-family:Arial;\">  Following QlikSense task has failed to run:<br> <br> Task Name = <strong>"
-                + taskName + "</strong><br>Failure Date = <strong> " + taskDate + "</strong> <br>Error = <strong> " +
-                errorMsg + "</strong><br><br> No new alerts will be sent for this task for the next 24 hours! </div>";
+                $"<h1 style=\"font-family:Arial;color: #04B431;\" >Automated QlikSense Task Failure Alert ({hostname})" +
+                $"!</h1> <div style=\"font-family:Arial;\">  Following QlikSense task has failed to run:<br> " +
+                $"<br> Task Name = <strong> {taskName} </strong><br>Failure Date = <strong> {taskDate} </strong> " +
+                $"<br>Error = <strong> {errorMsg} </strong><br><br> No new alerts will be sent for this task for the next 24 hours! </div>";
 
             var smtp = new SmtpClient(smtpServer, smtpPort)
             {
